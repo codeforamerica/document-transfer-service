@@ -6,6 +6,7 @@ require_relative '../../../lib/api/api'
 
 describe DocumentService::API do
   include Rack::Test::Methods
+  include StatsD::Instrument::Matchers
 
   def app
     DocumentService::API
@@ -20,6 +21,10 @@ describe DocumentService::API do
     it 'includes a status message' do
       get '/health'
       expect(last_response.body).to eq({ status: 'ok' }.to_json)
+    end
+
+    it 'increments the health check counter' do
+      expect { get '/health' }.to trigger_statsd_increment('health_check')
     end
   end
 end

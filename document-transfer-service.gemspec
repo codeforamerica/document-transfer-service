@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'grape', '~> 2.0'
   s.add_runtime_dependency 'rack', '~> 3.0'
   s.add_runtime_dependency 'rackup', '~> 2.1'
+  s.add_runtime_dependency 'statsd-instrument', '~> 3.7'
 end
