@@ -1,2 +1,3 @@
-# document-transfer-service
-Microservice to securely transfer documents.
+# Document Transfer Service
+
+A microservice to securely transfer documents.
