@@ -1,6 +1,7 @@
 name: Branch Checks
 
 on:
+  pull_request:
   push:
     branches-ignore:
       - main
@@ -48,8 +49,6 @@ jobs:
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
-#        with:
-#          images: name/app
       - name: Build the image
         uses: docker/build-push-action@v5
         with:
