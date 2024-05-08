@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    volumes:
+      - .:/opt/app
+    ports:
+      - "3000:${DTS_API_PORT:-3000}"
