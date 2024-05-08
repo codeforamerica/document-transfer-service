@@ -1,14 +1,21 @@
 #### 🔗 Jira ticket
+
 CCAP-XXX
 
 #### ✍️ Description
+
 <!-- Brief summary of changes  -->
 
 #### 📷 Design reference
+
 <!-- Notion or document link if applicable -->
 
+#### 🧪 Testing instructions
+
+- [ ] Step 1...
+- [ ] Step 2...
+
 #### ✅ Completion tasks
-<!-- Remember to add testing instructions to ticket -->
 
 - [ ] Added relevant tests
 - [ ] Meets acceptance criteria
