@@ -1,5 +1,5 @@
 services:
-  web:
+  api:
     build: .
     volumes:
       - .:/opt/app
