@@ -15,7 +15,8 @@ system to the running container. This will allow you to make changes to the
 code and see them reflected in the running service without having to rebuild the
 image.
 
-To run the service with docker compose, run the following:
+To run the service with docker compose, make sure you have [Docker Desktop]
+installed and run the following:
 
 ```sh
 docker compose up -d
@@ -36,3 +37,4 @@ The service should now be available at `http://localhost:9292`.
 
 [Dockerfile]: ./Dockerfile
 [docker compose]: ./docker-compose.yaml
+[Docker Desktop]: https://docs.docker.com/desktop/
