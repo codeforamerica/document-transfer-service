@@ -10,7 +10,7 @@ task :environment do
   require_relative 'lib/api/api'
 end
 
-GrapeSwagger::Rake::OapiTasks.new('::DocumentService::API')
+GrapeSwagger::Rake::OapiTasks.new('::DocumentTransfer::API::API')
 
 RuboCop::RakeTask.new(:rubocop) do |task|
   task.requires << 'rubocop'

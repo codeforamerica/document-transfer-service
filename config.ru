@@ -2,4 +2,4 @@
 
 require_relative 'lib/api/api'
 
-run DocumentService::API
+run DocumentTransfer::API::API
