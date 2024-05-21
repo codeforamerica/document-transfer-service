@@ -1,0 +1,59 @@
+info:
+  title: Document Transfer Service API
+  license:
+    name: MIT
+    url: https://github.com/codeforamerica/document-transfer-service/blob/main/LICENSE
+  version: 0.0.1
+swagger: "2.0"
+produces:
+  - application/json
+host: example.org
+tags:
+  - name: health
+    description: Operations about healths
+  - name: api
+    description: Operations about apis
+paths:
+  /health:
+    get:
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: get Health(s)
+      tags:
+        - health
+      operationId: getHealth
+  /api:
+    get:
+      description: Swagger compatible API description
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Swagger compatible API description
+      tags:
+        - api
+      operationId: getApi
+  /api/{name}:
+    get:
+      description: Swagger compatible API description for specific API
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: name
+          description: Resource name of mounted API
+          type: string
+          required: true
+        - in: query
+          name: locale
+          description: Locale of API documentation
+          type: string
+          required: false
+      responses:
+        "200":
+          description: Swagger compatible API description for specific API
+      tags:
+        - api
+      operationId: getApiName
