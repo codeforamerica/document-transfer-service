@@ -12,11 +12,15 @@ module DocumentTransfer
         self.class.options
       end
 
-      def method_missing(name, *args, &block)
+      def method_missing(name, *args, &)
         super unless options.key?(name)
 
         @params[name] = format_value(name, args.first) if args.any?
         @params[name] || options[name]&.[](:default)
+      end
+
+      def respond_to_missing?(name, include_private = false)
+        options.key?(name) || super
       end
 
       def format_value(option, value)
@@ -28,7 +32,10 @@ module DocumentTransfer
       end
 
       # Required class methods for the config DSL.
+      #
+      # @todo Can we do this without using class variables?
       module ClassMethods
+        # rubocop:disable Style/ClassVars
         def option(name, opts = {})
           class_variable_set(:@@options, options.merge({ name => opts }))
         end
@@ -36,6 +43,7 @@ module DocumentTransfer
         def options
           class_variable_defined?(:@@options) ? class_variable_get(:@@options) : {}
         end
+        # rubocop:enable Style/ClassVars
       end
     end
   end

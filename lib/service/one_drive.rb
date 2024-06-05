@@ -18,22 +18,16 @@ module DocumentTransfer
       end
 
       def get_items_recursive(item_id = 'root')
-        results = []
-        items = get_items(item_id)
-        items.each do |item|
-          puts "Found Item: #{item.name} (#{item.id})"
-          results << {
+        get_items(item_id).map do |item|
+          {
             id: item.id,
             name: item.name,
             type: item.file ? :file : :folder,
-            mime_type: item.file ? item.file.mime_type : nil,
+            mime_type: item.file&.mime_type,
             children: get_items_recursive(item.id),
-            # children: get_items_recursive("#{item_id}:/#{item.name}"),
-            parent: item.parent_reference ? item.parent_reference.path : nil
+            parent: item.parent_reference&.path
           }
         end
-
-        results
       end
 
       def upload(source, path: '', filename: nil)
@@ -46,34 +40,24 @@ module DocumentTransfer
 
       private
 
+      # Creates a new client object once.
+      #
+      # @todo Get credentials as part of a configuration, rather than
+      # environment variables.
       def client
         return @client if @client
 
         auth_ctx = ADAL::AuthenticationContext.new(AUTH_AUTHORITY,
-                                                   ENV['ONEDRIVE_TENANT_ID'])
-        client_cred = ADAL::ClientCredential.new(ENV['ONEDRIVE_CLIENT_ID'],
-                                                 ENV['ONEDRIVE_CLIENT_SECRET'])
+                                                   ENV.fetch('ONEDRIVE_TENANT_ID', nil))
+        client_cred = ADAL::ClientCredential.new(ENV.fetch('ONEDRIVE_CLIENT_ID', nil),
+                                                 ENV.fetch('ONEDRIVE_CLIENT_SECRET', nil))
         token = auth_ctx.acquire_token_for_client(AUTH_RESOURCE, client_cred)
 
         @client = Microsoft::Graph.new(token: token.access_token)
       end
 
       def drive_id
-        ENV['ONEDRIVE_DRIVE_ID']
-      end
-
-      def client_depr
-        return @client if @client
-
-        context = MicrosoftKiotaAuthenticationOAuth::ClientCredentialContext.new(
-          ENV['ONEDRIVE_TENANT_ID'], ENV['ONEDRIVE_CLIENT_ID'], ENV['ONEDRIVE_CLIENT_SECRET'])
-
-        auth = MicrosoftGraphCore::Authentication::OAuthAuthenticationProvider.new(
-          context, nil, ["https://graph.microsoft.com/.default"]
-        )
-
-        adapter = MicrosoftGraph::GraphRequestAdapter.new(auth)
-        @client = MicrosoftGraph::GraphServiceClient.new(adapter)
+        ENV.fetch('ONEDRIVE_DRIVE_ID', nil)
       end
     end
   end
