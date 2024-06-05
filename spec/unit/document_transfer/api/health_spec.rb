@@ -2,20 +2,21 @@
 
 require 'rack/test'
 
-require_relative '../../../lib/api/api'
+require_relative '../../../../lib/api/api'
+require_relative '../../../../lib/api/health'
 
-describe DocumentService::API do
+describe DocumentTransfer::API::Health do
   include Rack::Test::Methods
   include StatsD::Instrument::Matchers
 
   def app
-    DocumentService::API
+    DocumentTransfer::API::API
   end
 
   describe 'GET /health' do
     it 'returns 200' do
       get '/health'
-      expect(last_response.status).to eq(200)
+      expect(last_response).to be_ok
     end
 
     it 'includes a status message' do

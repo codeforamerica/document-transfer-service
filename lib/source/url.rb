@@ -17,7 +17,7 @@ module DocumentTransfer
       end
 
       def fetch
-        Faraday.get(@config.url).body
+        client.get(@config.url).body
       end
 
       def size
@@ -26,8 +26,12 @@ module DocumentTransfer
 
       private
 
+      def client
+        @client ||= Faraday.new(@config.url)
+      end
+
       def head
-        @head ||= Faraday.head(@config.url)
+        @head ||= client.head(@config.url)
       end
     end
   end

@@ -1,6 +1,7 @@
 # Ignore local environment files
 .env
 *.env
+coverage/
 
 # Ignore Byebug command history file.
 .byebug_history

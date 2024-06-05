@@ -6,7 +6,7 @@ require 'rubocop/rake_task'
 
 task default: %i[spec rubocop]
 
-task :environment do
+task :environment do # rubocop:disable Rake/Desc
   require_relative 'lib/api/api'
 end
 
