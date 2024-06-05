@@ -5,3 +5,8 @@ require:
 AllCops:
   NewCops: enable
   SuggestExtensions: true
+
+# Transient properties get mistaken for associations in FactoryBot.
+# See https://github.com/rubocop/rubocop-factory_bot/issues/73
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false

@@ -5,4 +5,7 @@ FactoryBot::SyntaxRunner.class_eval do
   include RSpec::Mocks::ExampleMethods
 end
 
+require_relative 'factories/config/destination_factory'
 require_relative 'factories/config/source_factory'
+require_relative 'factories/service/one_drive_factory'
+require_relative 'factories/source/url_factory'
