@@ -21,8 +21,11 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.3'
 
   # Add runtime dependencies.
+  s.add_runtime_dependency 'adal', '~> 1.0'
+  s.add_runtime_dependency 'faraday', '~> 2.9'
   s.add_runtime_dependency 'grape', '~> 2.0'
   s.add_runtime_dependency 'grape-swagger', '~> 2.1'
+  s.add_runtime_dependency 'httparty', '~> 0.22'
   s.add_runtime_dependency 'rack', '~> 3.0'
   s.add_runtime_dependency 'rackup', '~> 2.1'
   s.add_runtime_dependency 'statsd-instrument', '~> 3.7'

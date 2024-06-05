@@ -4,6 +4,7 @@ require 'grape'
 require 'grape-swagger'
 
 require_relative 'health'
+require_relative 'transfer'
 
 module DocumentTransfer
   module API
@@ -12,6 +13,7 @@ module DocumentTransfer
       format :json
 
       mount DocumentTransfer::API::Health
+      mount DocumentTransfer::API::Transfer
 
       add_swagger_documentation \
         hide_documentation_path: false,
