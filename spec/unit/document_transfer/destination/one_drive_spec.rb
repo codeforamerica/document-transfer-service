@@ -12,7 +12,7 @@ RSpec.describe DocumentTransfer::Destination::OneDrive do
   before do
     allow(DocumentTransfer::Service::OneDrive).to receive(:new).and_return(service)
     allow(service).to receive(:upload)
-                        .and_return(Microsoft::Graph::JSONStruct.new(name: 'rspec.pdf'))
+      .and_return(Microsoft::Graph::JSONStruct.new(name: 'rspec.pdf'))
   end
 
   describe '#transfer' do
