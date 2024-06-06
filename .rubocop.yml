@@ -10,3 +10,9 @@ AllCops:
 # See https://github.com/rubocop/rubocop-factory_bot/issues/73
 FactoryBot/FactoryAssociationWithStrategy:
   Enabled: false
+
+# Count multi-line hashes and arrays in examples as one line.
+RSpec/ExampleLength:
+  CountAsOne:
+    - array
+    - hash

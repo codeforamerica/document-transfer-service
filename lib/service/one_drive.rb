@@ -11,8 +11,6 @@ module DocumentTransfer
       AUTH_RESOURCE = 'https://graph.microsoft.com'
 
       def get_items(item_id)
-        puts "Getting items for #{item_id}"
-
         items = client.get("/drives/#{drive_id}/items/#{item_id}/children")
         items.value || []
       end
@@ -24,7 +22,7 @@ module DocumentTransfer
             name: item.name,
             type: item.file ? :file : :folder,
             mime_type: item.file&.mime_type,
-            children: get_items_recursive(item.id),
+            children: item.folder&.child_count.to_i.positive? ? get_items_recursive(item.id) : [],
             parent: item.parent_reference&.path
           }
         end
