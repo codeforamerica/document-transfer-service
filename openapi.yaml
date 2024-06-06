@@ -32,16 +32,21 @@ paths:
       responses:
         "201":
           description: Initiate a new transfer.
+          schema:
+            $ref: '#/definitions/TransferSuccess'
       tags:
         - transfer
       operationId: postTransfer
   /health:
     get:
+      description: Check system health
       produces:
         - application/json
       responses:
         "200":
-          description: get Health(s)
+          description: Check system health
+          schema:
+            $ref: '#/definitions/HealthStatus'
       tags:
         - health
       operationId: getHealth
@@ -120,3 +125,23 @@ definitions:
       - source
       - destination
     description: Initiate a new transfer.
+  TransferSuccess:
+    type: object
+    properties:
+      status:
+        type: string
+        description: The status of the transfer.
+      destination:
+        type: string
+        description: The destination type.
+      path:
+        type: string
+        description: The path withing the destination where the file was sent.
+    description: TransferSuccess model
+  HealthStatus:
+    type: object
+    properties:
+      status:
+        type: string
+        description: The current application health status.
+    description: HealthStatus model

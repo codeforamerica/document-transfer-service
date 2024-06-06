@@ -2,6 +2,7 @@
 
 require 'grape'
 require 'grape-swagger'
+require 'grape-swagger-entity'
 
 require_relative 'health'
 require_relative 'transfer'

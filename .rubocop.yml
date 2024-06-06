@@ -17,3 +17,8 @@ RSpec/ExampleLength:
   CountAsOne:
     - array
     - hash
+
+Metrics/BlockLength:
+  AllowedMethods:
+    # Exclude grape `resource` blocks.
+    - resource

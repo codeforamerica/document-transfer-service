@@ -3,6 +3,7 @@
 require_relative '../config/destination'
 require_relative '../config/source'
 require_relative '../destination'
+require_relative '../response/transfer_success'
 require_relative '../source'
 
 module DocumentTransfer
@@ -10,7 +11,7 @@ module DocumentTransfer
     # Document transfer endpoint and resources for the API.
     class Transfer < Grape::API
       resource :transfer do
-        desc 'Initiate a new transfer.'
+        desc 'Initiate a new transfer.', success: DocumentTransfer::Response::TransferSuccess
         params do
           requires :source, type: Hash, desc: 'The source document.' do
             requires :type, type: Symbol, values: [:url], desc: 'The type of the source document.'
@@ -36,7 +37,10 @@ module DocumentTransfer
 
           result = destination.transfer(source)
 
-          { status: 'ok', destination: dest_config.type }.merge(result)
+          present DocumentTransfer::Response::TransferSuccess.new({
+            status: 'ok',
+            destination: dest_config.type
+          }.merge(result))
         end
       end
     end
