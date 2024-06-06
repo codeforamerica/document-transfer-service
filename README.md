@@ -35,6 +35,12 @@ bundle exec rackup
 
 The service should now be available at `http://localhost:9292`.
 
+## Usage
+
+See the [API documentation][api] for information on how to interact with the
+service.
+
+[api]: ./doc/api.md
 [Dockerfile]: ./Dockerfile
 [docker compose]: ./docker-compose.yaml
 [Docker Desktop]: https://docs.docker.com/desktop/
