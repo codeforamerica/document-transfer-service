@@ -8,7 +8,9 @@ module DocumentTransfer
     # Microsoft OneDrive destination.
     class OneDrive < Base
       def transfer(source)
-        service.upload(source, path: @config.path, filename: @config.filename)
+        result = service.upload(source, path: @config.path, filename: @config.filename)
+
+        { path: File.join(@config.path, result.name) }
       end
 
       private

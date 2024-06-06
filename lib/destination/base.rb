@@ -3,6 +3,8 @@
 module DocumentTransfer
   module Destination
     # Base class for destinations.
+    #
+    # @abstract Subclass and override {#transfer} to implement a destination.
     class Base
       # Initializes the destination.
       #
@@ -14,6 +16,9 @@ module DocumentTransfer
       # Transfers a document to the destination.
       #
       # @param source [DocumentTransfer::Source::Base] The source document.
+      # @return [Hash] The result of the transfer.
+      #
+      # @raise [NotImplementedError] If the method is not implemented by the subclass.
       def transfer(source)
         raise NotImplementedError
       end

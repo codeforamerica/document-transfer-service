@@ -34,9 +34,9 @@ module DocumentTransfer
           source = DocumentTransfer::Source.load(source_config)
           destination = DocumentTransfer::Destination.load(dest_config)
 
-          destination.transfer(source)
+          result = destination.transfer(source)
 
-          { status: 'ok', source: source_config.type, destination: dest_config.type }
+          { status: 'ok', destination: dest_config.type }.merge(result)
         end
       end
     end
