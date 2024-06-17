@@ -54,6 +54,6 @@ Additional fields may be included based on the destination type.
 }
 ```
 
-[destination]: destination.md
-[source]: source.md
+[destination]: destinations.md
+[source]: sources.md
 [spec]: ../openapi.yaml
