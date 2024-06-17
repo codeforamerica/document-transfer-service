@@ -15,6 +15,7 @@ versions:
   - rubocop: 'latest'
   - rubocop-rake: 'latest'
   - rubocop-rspec: 'latest'
+  - rubocop-factory_bot: 'latest'
 
 # Description: RuboCop configuration file path relative to the workspace.
 # Valid options: A valid file path inside of the workspace.

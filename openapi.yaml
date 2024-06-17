@@ -1,0 +1,147 @@
+info:
+  title: Document Transfer Service API
+  license:
+    name: MIT
+    url: https://github.com/codeforamerica/document-transfer-service/blob/main/LICENSE
+  version: 0.0.1
+swagger: "2.0"
+produces:
+  - application/json
+host: example.org
+tags:
+  - name: transfer
+    description: Operations about transfers
+  - name: health
+    description: Operations about healths
+  - name: api
+    description: Operations about apis
+paths:
+  /transfer:
+    post:
+      description: Initiate a new transfer.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: postTransfer
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/postTransfer'
+      responses:
+        "201":
+          description: Initiate a new transfer.
+          schema:
+            $ref: '#/definitions/TransferSuccess'
+      tags:
+        - transfer
+      operationId: postTransfer
+  /health:
+    get:
+      description: Check system health
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Check system health
+          schema:
+            $ref: '#/definitions/HealthStatus'
+      tags:
+        - health
+      operationId: getHealth
+  /api:
+    get:
+      description: Swagger compatible API description
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Swagger compatible API description
+      tags:
+        - api
+      operationId: getApi
+  /api/{name}:
+    get:
+      description: Swagger compatible API description for specific API
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: name
+          description: Resource name of mounted API
+          type: string
+          required: true
+        - in: query
+          name: locale
+          description: Locale of API documentation
+          type: string
+          required: false
+      responses:
+        "200":
+          description: Swagger compatible API description for specific API
+      tags:
+        - api
+      operationId: getApiName
+definitions:
+  postTransfer:
+    type: object
+    properties:
+      source:
+        type: object
+        description: The source document.
+        properties:
+          type:
+            type: string
+            description: The type of the source document.
+            enum:
+              - url
+          url:
+            type: string
+            format: uri
+            description: The URL of the document to be transferred. Required when the source type is "url".
+        required:
+          - type
+          - url
+      destination:
+        type: object
+        description: The destination for the document.
+        properties:
+          type:
+            type: string
+            description: The document destination type.
+            enum:
+              - onedrive
+          path:
+            type: string
+            description: The path to store the document in the destination.
+            default: ""
+          filename:
+            type: string
+            description: The filename to store the document as in the destination, if different from the source.
+        required:
+          - type
+    required:
+      - source
+      - destination
+    description: Initiate a new transfer.
+  TransferSuccess:
+    type: object
+    properties:
+      status:
+        type: string
+        description: The status of the transfer.
+      destination:
+        type: string
+        description: The destination type.
+      path:
+        type: string
+        description: The path withing the destination where the file was sent.
+    description: TransferSuccess model
+  HealthStatus:
+    type: object
+    properties:
+      status:
+        type: string
+        description: The current application health status.
+    description: HealthStatus model

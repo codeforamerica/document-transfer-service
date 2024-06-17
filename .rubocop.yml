@@ -1,3 +1,24 @@
+require:
+  - rubocop-factory_bot
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
   NewCops: enable
   SuggestExtensions: true
+
+# Transient properties get mistaken for associations in FactoryBot.
+# See https://github.com/rubocop/rubocop-factory_bot/issues/73
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false
+
+# Count multi-line hashes and arrays in examples as one line.
+RSpec/ExampleLength:
+  CountAsOne:
+    - array
+    - hash
+
+Metrics/BlockLength:
+  AllowedMethods:
+    # Exclude grape `resource` blocks.
+    - resource

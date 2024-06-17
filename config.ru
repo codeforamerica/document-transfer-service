@@ -2,4 +2,6 @@
 
 require_relative 'lib/api/api'
 
-run DocumentService::API
+use Rack::RewindableInput::Middleware
+
+run DocumentTransfer::API::API
