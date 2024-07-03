@@ -74,7 +74,7 @@ module DocumentTransfer
         # @param [Hash] env The environment hash.
         # @param [Float] duration The duration of the request.
         def log(status, headers, env, duration)
-          logger.push_tags(tags(env))
+          SemanticLogger.push_named_tags(DEFAULT_TAGS)
           logger.info(
             message: 'Request received',
             duration:,
@@ -105,14 +105,6 @@ module DocumentTransfer
             content_length: content_length(headers),
             request_id: request_id(env)
           }
-        end
-
-        # Builds an array of tags to include with our stats.
-        #
-        # @param [Hash] env The environment hash.
-        # @return [Hash{Symbol => String}]
-        def tags(env)
-          DEFAULT_TAGS.merge({ request_id: request_id(env) })
         end
       end
     end

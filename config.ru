@@ -14,12 +14,14 @@ require_relative 'lib/api/middleware/request_id'
 require_relative 'lib/api/middleware/request_logging'
 
 # Configure the logger.
-SemanticLogger.default_level = ENV.fetch('LOG_LEVEL', 'info')
-SemanticLogger.add_appender(io: $stdout)
+SemanticLogger.default_level = ENV.fetch('LOG_LEVEL',
+                                         DocumentTransfer::DEFAULT_LOG_LEVEL)
+SemanticLogger.application = DocumentTransfer::NAME
+SemanticLogger.add_appender(io: $stdout, formatter: :json)
 
 # Configure telemetry reporting.
 OpenTelemetry::SDK.configure do |c|
-  c.service_name = 'document-transfer-service'
+  c.service_name = DocumentTransfer::NAME
   c.service_version = DocumentTransfer::VERSION
   c.use_all
 end
