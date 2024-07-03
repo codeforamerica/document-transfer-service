@@ -49,12 +49,32 @@ module DocumentTransfer
 
         private
 
-        # Builds the base name for our stats.
+        # Fetches the base name for our stats.
         #
         # @param [Grape::Endpoint] endpoint The Grape endpoint.
         # @return [String]
         def stat_name(endpoint)
-          "endpoint.#{endpoint.options[:path].join('.')}"
+          # If the stat hasn't been explicitly set, we'll use the namespace and
+          # path of the endpoint.
+          name = endpoint.options[:route_options][:stat_name] ||
+                 build_stat_name(endpoint)
+
+          "endpoint.#{name}"
+        end
+
+        # Builds the stat name for an endpoint that doesn't have one explicitly
+        # defined.
+        #
+        # We use the name space and path of the endpoint, stripping any "/" and
+        # joining the parts with a ".".
+        #
+        # @param [Grape::Endpoint] endpoint The Grape endpoint.
+        # @return [String]
+        def build_stat_name(endpoint)
+          parts = (endpoint.namespace.split('/') +
+                   endpoint.options[:path])
+          parts.reject! { |part| part.empty? || part == '/' }
+          parts.join('.')
         end
 
         # Builds an array of tags to include with our stats.
