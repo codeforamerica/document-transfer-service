@@ -41,6 +41,9 @@ module DocumentTransfer
           telemetry_attributes(env)
           response, duration = measure { @app.call(env) }
 
+          # If this wasn't an endpoint, we don't have any stats to record.
+          return response unless env.key?('api.endpoint')
+
           # Increment the number of requests to this endpoint, and add a measure
           # of its duration.
           tags = tags(env['api.endpoint'], status: response[0])
