@@ -21,8 +21,16 @@ end
 ENV['RACK_ENV'] = 'test'
 RSPEC_APP = Rack::Builder.parse_file('config.ru')
 
+# Mock out the logger, and make the mock available to all tests.
+RSPEC_LOGGER = SemanticLogger::Test::CaptureLogEvents.new
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+
+  config.before do
+    RSPEC_LOGGER.clear
+    allow(SemanticLogger::Logger).to receive(:new).and_return(RSPEC_LOGGER)
+  end
 end
 
 # Include shared examples and factories.

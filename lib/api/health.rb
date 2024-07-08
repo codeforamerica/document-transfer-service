@@ -9,7 +9,7 @@ module DocumentTransfer
     # Health check endpoint for the API.
     class Health < Grape::API
       desc 'Check system health', success: DocumentTransfer::Response::HealthStatus,
-                                  stat_name: 'health'
+                                  endpoint_name: 'health'
       get :health do
         present DocumentTransfer::Response::HealthStatus.new(status: 'ok')
       end

@@ -12,6 +12,7 @@ describe DocumentTransfer::API::Health do
 
   describe 'GET /health' do
     include_examples 'instrumented', :get, '/health', :health
+    include_examples 'request_ids', :get, '/health'
 
     it 'returns 200' do
       get '/health'

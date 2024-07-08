@@ -9,6 +9,7 @@ require 'semantic_logger'
 
 require_relative 'lib/document_transfer'
 require_relative 'lib/api/api'
+require_relative 'lib/api/middleware/correlation_id'
 require_relative 'lib/api/middleware/instrument'
 require_relative 'lib/api/middleware/request_id'
 require_relative 'lib/api/middleware/request_logging'
@@ -29,8 +30,9 @@ end
 # Include Rack middleware.
 use Rack::RewindableInput::Middleware
 use DocumentTransfer::API::Middleware::RequestId
+use DocumentTransfer::API::Middleware::CorrelationId
+use(*OpenTelemetry::Instrumentation::Rack::Instrumentation.instance.middleware_args)
 use DocumentTransfer::API::Middleware::RequestLogging
 use DocumentTransfer::API::Middleware::Instrument
-use(*OpenTelemetry::Instrumentation::Rack::Instrumentation.instance.middleware_args)
 
 run DocumentTransfer::API::API

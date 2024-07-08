@@ -33,6 +33,7 @@ describe DocumentTransfer::API::Transfer do
     end
 
     include_examples 'instrumented', :post, '/transfer', :transfer
+    include_examples 'request_ids', :get, '/transfer'
 
     it 'succeeds' do
       post '/transfer', params

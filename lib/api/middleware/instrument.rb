@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require 'opentelemetry/sdk'
 require 'statsd-instrument'
 
+require_relative 'correlation_id'
+require_relative 'request_id'
 require_relative '../util/measure'
 
 module DocumentTransfer
@@ -11,10 +14,10 @@ module DocumentTransfer
       class Instrument
         include DocumentTransfer::Util::Measure
 
-        DEFAULT_TAGS = [
-          'service:document-transfer-service',
-          "version:#{DocumentTransfer::VERSION}",
-          "environment:#{ENV.fetch('RACK_ENV', 'development')}"
+        DEFAULT_TAGS = %W[
+          service:document-transfer-service
+          version:#{DocumentTransfer::VERSION}
+          environment:#{ENV.fetch('RACK_ENV', 'development')}
         ].freeze
 
         # Initialize the middleware
@@ -24,7 +27,7 @@ module DocumentTransfer
           @app = app
         end
 
-        # Measure the duration of the request.
+        # Record and measure details about the request.
         #
         # We could measure the duration in a block to StatsD.measure, but we
         # don't have access to the grape endpoint until after it has been
@@ -35,46 +38,53 @@ module DocumentTransfer
         # @return [Array<Integer, Rack::Headers, Rack::BodyProxy] The response
         #   for the request.
         def call(env)
+          telemetry_attributes(env)
           response, duration = measure { @app.call(env) }
 
           # Increment the number of requests to this endpoint, and add a measure
           # of its duration.
           tags = tags(env['api.endpoint'], status: response[0])
-          StatsD.increment("#{stat_name(env['api.endpoint'])}.requests", tags:)
-          StatsD.measure("#{stat_name(env['api.endpoint'])}.duration",
-                         duration, tags:)
+          StatsD.increment('endpoint.requests.count', tags:)
+          StatsD.measure('endpoint.requests.duration', duration, tags:)
 
           response
         end
 
         private
 
-        # Fetches the base name for our stats.
+        # Fetches the name for the endpoint we're instrumenting.
         #
         # @param [Grape::Endpoint] endpoint The Grape endpoint.
         # @return [String]
-        def stat_name(endpoint)
-          # If the stat hasn't been explicitly set, we'll use the namespace and
-          # path of the endpoint.
-          name = endpoint.options[:route_options][:stat_name] ||
-                 build_stat_name(endpoint)
-
-          "endpoint.#{name}"
+        def endpoint_name(endpoint)
+          endpoint.options[:route_options][:endpoint_name] ||
+            build_endpoint_name(endpoint)
         end
 
-        # Builds the stat name for an endpoint that doesn't have one explicitly
+        # Builds the name for an endpoint that doesn't have one explicitly
         # defined.
         #
-        # We use the name space and path of the endpoint, stripping any "/" and
+        # We use the namespace and path of the endpoint, stripping any "/" and
         # joining the parts with a ".".
         #
         # @param [Grape::Endpoint] endpoint The Grape endpoint.
         # @return [String]
-        def build_stat_name(endpoint)
+        def build_endpoint_name(endpoint)
           parts = (endpoint.namespace.split('/') +
-                   endpoint.options[:path])
+            endpoint.options[:path])
           parts.reject! { |part| part.empty? || part == '/' }
           parts.join('.')
+        end
+
+        # Adds OpenTelemetry attributes to the current span.
+        #
+        # @param [Hash] env The environment hash.
+        def telemetry_attributes(env)
+          current_span = OpenTelemetry::Trace.current_span
+          current_span.add_attributes(
+            'http.request_id' => env.fetch(RequestId::KEY, '-'),
+            'http.correlation_id' => env.fetch(CorrelationId::KEY, '-')
+          )
         end
 
         # Builds an array of tags to include with our stats.
@@ -83,8 +93,9 @@ module DocumentTransfer
         # @param [Integer] status The HTTP status code.
         # @return [Array<String>]
         def tags(endpoint, status: nil)
-          tags = DEFAULT_TAGS + [
-            "method:#{endpoint.options[:method].first}"
+          tags = DEFAULT_TAGS + %W[
+            method:#{endpoint.options[:method].first}
+            endpoint:#{endpoint_name(endpoint)}
           ]
           tags << "status:#{status}" unless status.nil?
 

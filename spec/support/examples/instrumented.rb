@@ -3,16 +3,20 @@
 require 'statsd-instrument'
 
 # Verify endpoint instrumentation.
-RSpec.shared_examples 'instrumented' do |method, path, stat|
+RSpec.shared_examples 'instrumented' do |method, path, endpoint_name|
   include StatsD::Instrument::Matchers
 
+  subject(:response) { send(method, path, defined?(params) ? params : {}) }
+
+  let(:tags) { %W[endpoint:#{endpoint_name} method:#{method.upcase}] }
+
   it 'increments the endpoint counter' do
-    expect { send(method, path, defined?(params) ? params : {}) }.to \
-      trigger_statsd_increment("endpoint.#{stat}.requests")
+    expect { response }.to trigger_statsd_increment('endpoint.requests.count',
+                                                    tags: include(*tags))
   end
 
   it 'measures the endpoint duration' do
-    expect { send(method, path) }.to \
-      trigger_statsd_measure("endpoint.#{stat}.duration")
+    expect { response }.to trigger_statsd_measure('endpoint.requests.duration',
+                                                  tags: include(*tags))
   end
 end
