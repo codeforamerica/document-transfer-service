@@ -13,6 +13,12 @@ module DocumentTransfer
     class API < Grape::API
       format :json
 
+      # Rescue all exceptions and return a JSON response with the message.
+      rescue_from :all do |e|
+        error!({ status: 'error', message: e.message },
+               e.respond_to?(:code) ? e.code : 500)
+      end
+
       mount DocumentTransfer::API::Health
       mount DocumentTransfer::API::Transfer
 

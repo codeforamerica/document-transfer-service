@@ -12,6 +12,14 @@ AllCops:
 FactoryBot/FactoryAssociationWithStrategy:
   Enabled: false
 
+# Don't let long declarations and invocations to contribute to method length.
+# This is preferable over squeezing them onto a single line.
+Metrics/MethodLength:
+  CountAsOne:
+    - array
+    - method_call
+    - hash
+
 # Count multi-line hashes and arrays in examples as one line.
 RSpec/ExampleLength:
   CountAsOne:

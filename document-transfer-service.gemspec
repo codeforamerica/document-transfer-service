@@ -28,7 +28,13 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'grape-swagger', '~> 2.1'
   s.add_runtime_dependency 'grape-swagger-entity', '~> 0.5'
   s.add_runtime_dependency 'httparty', '~> 0.22'
+  s.add_runtime_dependency 'opentelemetry-exporter-otlp', '~> 0.27'
+  s.add_runtime_dependency 'opentelemetry-instrumentation-faraday', '~> 0.24'
+  s.add_runtime_dependency 'opentelemetry-instrumentation-grape', '~> 0.1'
+  s.add_runtime_dependency 'opentelemetry-instrumentation-rack', '~> 0.24'
+  s.add_runtime_dependency 'opentelemetry-sdk', '~> 1.4'
   s.add_runtime_dependency 'rack', '~> 3.0'
   s.add_runtime_dependency 'rackup', '~> 2.1'
+  s.add_runtime_dependency 'semantic_logger', '~> 4.15'
   s.add_runtime_dependency 'statsd-instrument', '~> 3.7'
 end

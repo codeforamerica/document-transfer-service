@@ -11,7 +11,8 @@ module DocumentTransfer
     # Document transfer endpoint and resources for the API.
     class Transfer < Grape::API
       resource :transfer do
-        desc 'Initiate a new transfer.', success: DocumentTransfer::Response::TransferSuccess
+        desc 'Initiate a new transfer.', success: DocumentTransfer::Response::TransferSuccess,
+                                         endpoint_name: 'transfer'
         params do
           requires :source, type: Hash, desc: 'The source document.' do
             requires :type, type: Symbol, values: [:url], desc: 'The type of the source document.'

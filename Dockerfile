@@ -11,6 +11,7 @@ RUN bundle config --global frozen 1
 
 # Install application depedencies.
 RUN bundle install
+RUN bundle binstubs --all
 
 # Copy the application code.
 COPY . .

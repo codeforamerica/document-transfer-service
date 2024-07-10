@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-require 'rack/test'
-
 require_relative '../../../../lib/api/api'
 require_relative '../../../../lib/api/transfer'
 
 describe DocumentTransfer::API::Transfer do
   include Rack::Test::Methods
-  include StatsD::Instrument::Matchers
 
   def app
-    DocumentTransfer::API::API
+    RSPEC_APP
   end
 
   describe 'POST /transfer' do
@@ -34,6 +31,9 @@ describe DocumentTransfer::API::Transfer do
       allow(DocumentTransfer::Destination::OneDrive).to receive(:new).and_return(destination)
       allow(destination).to receive(:transfer).and_return({ path: 'rspec-folder/rspec.pdf' })
     end
+
+    include_examples 'instrumented', :post, '/transfer', :transfer
+    include_examples 'request_ids', :get, '/transfer'
 
     it 'succeeds' do
       post '/transfer', params
