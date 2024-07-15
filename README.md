@@ -64,14 +64,58 @@ docker compose up -d --build api
 
 ### Locally
 
-To run the service locally, install dependencies using `bundle install`, then
-run the following:
+In order to run the service locally, you will need to have Ruby installed. We
+recommend using a virtual environment manager such as [RVM] to manage your Ruby
+installations. The required version of Ruby is defined in the
+[`.ruby-version`][ruby-version] file.
+
+You will also need a database for the service to store data. The service is
+designed to work with a PostgreSQL database. You can configure the database
+using the `DATABASE_URL` environment variable. The `sample.env` file assumes
+you can connect to a database at `localhost:5432`. You can update this in your
+`.env` file.
+
+With ruby installed and the database configured, install gem dependencies and
+set up the database with the following:
+
+```bash
+bundle install
+bundle exec rake db:setup
+```
+
+You should now be able to start the service with:
 
 ```sh
 bundle exec rackup
 ```
 
 The service should now be available at `http://localhost:9292`.
+
+#### Updating the service
+
+When you update the service locally, you will need to install any new
+dependencies and run any database migrations before you can start the service.
+You can do this by running the following:
+
+```bash
+bundle install
+bundle exec rake db:migrate
+```
+
+#### Dropping or resetting the database
+
+If you need to reset the database to it's initial state, you can use the
+following:
+
+```bash
+bundle exec rake db:reset
+```
+
+If you'd like to drop the database entirely, you can do so with:
+
+```bash
+bundle exec rake db:drop
+```
 
 ## Usage
 
@@ -85,4 +129,6 @@ service.
 [docker compose]: ./docker-compose.yaml
 [Docker Desktop]: https://docs.docker.com/desktop/
 [omz]: https://ohmyz.sh/
+[ruby-version]: ./.ruby-version
+[rvm]: https://rvm.io/
 [source]: ./doc/sources.md
