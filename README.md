@@ -45,6 +45,23 @@ docker compose up -d
 
 The service should now be available at `http://localhost:3000`.
 
+#### Updating the docker image
+
+When you run `docker compse up -d`, the service will be updated to match the
+latest state defined in compose file. However, it will not detect changes that
+may require a rebuild of the image. In order to force a rebuild, you can pass
+the `--build` flag to the command:
+
+```bash
+docker compose up -d --build
+```
+
+You can also update _just_ the api service by specifying the service name:
+
+```bash
+docker compose up -d --build api
+```
+
 ### Locally
 
 To run the service locally, install dependencies using `bundle install`, then
