@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
 
   # Add runtime dependencies.
   s.add_runtime_dependency 'adal', '~> 1.0'
+  s.add_runtime_dependency 'bcrypt', '~> 3.1'
   s.add_runtime_dependency 'faraday', '~> 2.9'
   s.add_runtime_dependency 'grape', '~> 2.0'
   s.add_runtime_dependency 'grape-entity', '~> 1.0'
@@ -33,8 +34,10 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'opentelemetry-instrumentation-grape', '~> 0.1'
   s.add_runtime_dependency 'opentelemetry-instrumentation-rack', '~> 0.24'
   s.add_runtime_dependency 'opentelemetry-sdk', '~> 1.4'
+  s.add_runtime_dependency 'pg', '~> 1.5'
   s.add_runtime_dependency 'rack', '~> 3.0'
   s.add_runtime_dependency 'rackup', '~> 2.1'
   s.add_runtime_dependency 'semantic_logger', '~> 4.15'
+  s.add_runtime_dependency 'sequel', '~> 5.82'
   s.add_runtime_dependency 'statsd-instrument', '~> 3.7'
 end

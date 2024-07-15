@@ -3,6 +3,8 @@
 require 'factory_bot'
 require 'rack'
 require 'rack/test'
+require 'rspec/uuid'
+require 'sequel'
 
 # Configure code coverage reporting.
 if ENV.fetch('COVERAGE', false)
@@ -24,8 +26,19 @@ RSPEC_APP = Rack::Builder.parse_file('config.ru')
 # Mock out the logger, and make the mock available to all tests.
 RSPEC_LOGGER = SemanticLogger::Test::CaptureLogEvents.new
 
+# Connect to a test database and run migrations.
+ENV['DATABASE_URL'] = 'sqlite://memory'
+ENV['BASE_DATABASE'] = ''
+Sequel.extension :migration
+db = Sequel.connect(ENV.fetch('DATABASE_URL'))
+Sequel::Migrator.run(db, 'db')
+
+SPEC_ROOT = Pathname.new(__FILE__).dirname
+ROOT = SPEC_ROOT.join('..').expand_path
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.before do
     RSPEC_LOGGER.clear
@@ -36,3 +49,4 @@ end
 # Include shared examples and factories.
 require_relative 'support/examples'
 require_relative 'support/factories'
+require_relative 'support/contexts'
