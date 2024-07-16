@@ -17,9 +17,9 @@ color = "\e[1;33m" if config.prod_like?
 Pry.config.prompt_name = "document_transfer(#{config.environment})"
 Pry.config.prompt = Pry::Prompt.new(
   :document_transfer,
-  "Document transfer console prompt",
+  'Document transfer console prompt',
   [
-    proc { |a, b, p| "#{color}[#{p.input_ring.count}] #{p.config.prompt_name} > \e[0m" },
-    proc { |a, b, p| "#{color}[#{p.input_ring.count}] #{p.config.prompt_name} * \e[0m" },
+    proc { |_, _, p| "#{color}[#{p.input_ring.count}] #{p.config.prompt_name} > \e[0m" },
+    proc { |_, _, p| "#{color}[#{p.input_ring.count}] #{p.config.prompt_name} * \e[0m" }
   ]
 )

@@ -25,6 +25,10 @@ secure._
 
 ## Running
 
+Follow the documentation below for your preferred method of running the service.
+Once you have the service running, see [Create Auth Key][create-key] to set up
+credentials to use the [API].
+
 ### Docker
 
 This service is designed to be run in a containerized environment. As such, it
@@ -124,6 +128,7 @@ service.
 
 [.env]: ./sample.env
 [api]: ./doc/api.md
+[create-key]: ./doc/runbooks/create_auth_key.md
 [destination]: ./doc/destinations.md
 [Dockerfile]: ./Dockerfile
 [docker compose]: ./docker-compose.yaml

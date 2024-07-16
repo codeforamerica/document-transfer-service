@@ -56,7 +56,7 @@ Additional fields may be included based on the destination type.
 }
 ```
 
-[authentication]: api/authentication.md
-[destination]: destinations.md
-[source]: sources.md
+[authentication]: ./api/authentication.md
+[destination]: ./destinations.md
+[source]: ./sources.md
 [spec]: ../openapi.yaml
