@@ -6,22 +6,24 @@ require 'pg'
 describe 'db:drop', type: :functional do
   include_context 'with rake'
 
+  let(:db) do
+    instance_double(Sequel::SQLite::Database, literal: '', execute: nil)
+  end
+
   before do
-    allow_any_instance_of(Sequel::SQLite::Database).to receive(:execute)
+    allow(Sequel).to receive(:connect).and_yield(db).and_return(db)
   end
 
   it 'drops the database' do
-    expect_any_instance_of(Sequel::SQLite::Database).to receive(:execute)
-      .with(/DROP DATABASE /)
     task.invoke
+    expect(db).to have_received(:execute).with(/DROP DATABASE /)
   end
 
   context 'when the database does not exist' do
     before do
       exception = Sequel::DatabaseError.new
       exception.wrapped_exception = PG::InvalidCatalogName.new
-      allow_any_instance_of(Sequel::SQLite::Database).to receive(:execute)
-        .and_raise(exception)
+      allow(db).to receive(:execute).and_raise(exception)
     end
 
     it 'does not raise an error' do
