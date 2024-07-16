@@ -21,12 +21,6 @@ Sequel.connect(config.database_url)
 # Load all models.
 DocumentTransfer::Model.load
 
-require_relative 'lib/api/api'
-require_relative 'lib/api/middleware/correlation_id'
-require_relative 'lib/api/middleware/instrument'
-require_relative 'lib/api/middleware/request_id'
-require_relative 'lib/api/middleware/request_logging'
-
 # Configure the logger.
 SemanticLogger.default_level = ENV.fetch('LOG_LEVEL',
                                          DocumentTransfer::DEFAULT_LOG_LEVEL)
@@ -43,6 +37,6 @@ end
 # Include Rack middleware.
 use Rack::RewindableInput::Middleware
 use(*OpenTelemetry::Instrumentation::Rack::Instrumentation.instance.middleware_args)
-use(*DocumentTransfer::API::Middleware.load)
+DocumentTransfer::API::Middleware.load.each { |m| use m }
 
 run DocumentTransfer::API::API

@@ -6,6 +6,10 @@ describe DocumentTransfer::API::Middleware do
   describe '.load' do
     let(:middleware) do
       [
+        DocumentTransfer::API::Middleware::RequestId,
+        DocumentTransfer::API::Middleware::CorrelationId,
+        DocumentTransfer::API::Middleware::Instrument,
+        DocumentTransfer::API::Middleware::RequestLogging,
         DocumentTransfer::API::Middleware::AuthKey
       ]
     end
