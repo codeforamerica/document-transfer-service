@@ -14,6 +14,10 @@ module DocumentTransfer
       def prod?
         %w[production prod].include?(environment)
       end
+
+      def prod_like?
+        %w[demo staging].include?(environment)
+      end
     end
   end
 end
