@@ -3,6 +3,8 @@
 Interacting with the Document Transfer Service is done through a RESTful API.
 All requests and responses should be in JSON format, unless otherwise indicated.
 
+See the [authentication] documentation for information on how to authenticate.
+
 Full API documentation can be found in the [OpenAPI specification][spec].
 
 ## GET /health
@@ -54,6 +56,7 @@ Additional fields may be included based on the destination type.
 }
 ```
 
+[authentication]: api/authentication.md
 [destination]: destinations.md
 [source]: sources.md
 [spec]: ../openapi.yaml
