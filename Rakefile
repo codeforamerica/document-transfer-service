@@ -4,6 +4,8 @@ require 'grape-swagger/rake/oapi_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
+require_relative 'lib/document_transfer'
+
 task default: %i[spec rubocop]
 
 task :environment do # rubocop:disable Rake/Desc
@@ -17,3 +19,6 @@ RuboCop::RakeTask.new(:rubocop) do |task|
 end
 
 RSpec::Core::RakeTask.new(:spec)
+
+# Load our custom tasks.
+DocumentTransfer.load_rake_tasks

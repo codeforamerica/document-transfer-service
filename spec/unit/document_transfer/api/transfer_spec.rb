@@ -6,6 +6,13 @@ require_relative '../../../../lib/api/transfer'
 describe DocumentTransfer::API::Transfer do
   include Rack::Test::Methods
 
+  let(:auth_key) { create(:auth_key) }
+  let(:rack_env) do
+    {
+      'HTTP_AUTHORIZATION' => "Bearer realm=\"#{auth_key.consumer.id}\" #{auth_key.plain_key}"
+    }
+  end
+
   def app
     RSPEC_APP
   end
@@ -36,19 +43,19 @@ describe DocumentTransfer::API::Transfer do
     include_examples 'request_ids', :get, '/transfer'
 
     it 'succeeds' do
-      post '/transfer', params
+      post '/transfer', params, rack_env
 
       expect(last_response).to be_created
     end
 
     it 'transfers the document' do
-      post '/transfer', params
+      post '/transfer', params, rack_env
 
       expect(destination).to have_received(:transfer).with(source)
     end
 
     it 'returns a success message' do
-      post '/transfer', params
+      post '/transfer', params, rack_env
 
       expect(last_response.body).to eq({
         status: 'ok',

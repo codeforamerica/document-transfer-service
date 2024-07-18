@@ -6,4 +6,11 @@ module DocumentTransfer
   DEFAULT_LOG_LEVEL = 'info'
   NAME = 'document-transfer-service'
   VERSION = '0.1.0'
+
+  # Load all of our custom rake tasks.
+  def self.load_rake_tasks
+    require_relative 'rake/database/database'
+
+    Rake::Database::Database.new
+  end
 end

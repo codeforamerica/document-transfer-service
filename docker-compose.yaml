@@ -1,12 +1,42 @@
 services:
   api:
     build: .
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       ONEDRIVE_CLIENT_ID: ${ONEDRIVE_CLIENT_ID}
       ONEDRIVE_CLIENT_SECRET: ${ONEDRIVE_CLIENT_SECRET}
       ONEDRIVE_DRIVE_ID: ${ONEDRIVE_DRIVE_ID}
       ONEDRIVE_TENANT_ID: ${ONEDRIVE_TENANT_ID}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db/${POSTGRES_DB:-document_transfer}
     volumes:
       - .:/opt/app
     ports:
-      - "3000:${DTS_API_PORT:-3000}"
+      - "3000:${PORT:-3000}"
+    command: >
+      bash -c "bundle install
+      && bundle exec rake db:setup
+      && bundle exec rackup --port 3000 --host 0.0.0.0"
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-document_transfer}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-document_transfer}"
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+volumes:
+  postgres:

@@ -6,13 +6,20 @@ require 'opentelemetry/instrumentation/faraday'
 require 'opentelemetry/instrumentation/grape'
 require 'opentelemetry/instrumentation/rack'
 require 'semantic_logger'
+require 'sequel'
 
 require_relative 'lib/document_transfer'
 require_relative 'lib/api/api'
-require_relative 'lib/api/middleware/correlation_id'
-require_relative 'lib/api/middleware/instrument'
-require_relative 'lib/api/middleware/request_id'
-require_relative 'lib/api/middleware/request_logging'
+require_relative 'lib/api/middleware'
+require_relative 'lib/config/application'
+require_relative 'lib/model'
+
+# Connect to the database.
+config = DocumentTransfer::Config::Application.from_environment
+Sequel.connect(config.database_url)
+
+# Load all models.
+DocumentTransfer::Model.load
 
 # Configure the logger.
 SemanticLogger.default_level = ENV.fetch('LOG_LEVEL',
@@ -29,10 +36,7 @@ end
 
 # Include Rack middleware.
 use Rack::RewindableInput::Middleware
-use DocumentTransfer::API::Middleware::RequestId
-use DocumentTransfer::API::Middleware::CorrelationId
 use(*OpenTelemetry::Instrumentation::Rack::Instrumentation.instance.middleware_args)
-use DocumentTransfer::API::Middleware::RequestLogging
-use DocumentTransfer::API::Middleware::Instrument
+DocumentTransfer::API::Middleware.load.each { |m| use m }
 
 run DocumentTransfer::API::API
