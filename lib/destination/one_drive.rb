@@ -11,6 +11,8 @@ module DocumentTransfer
         result = service.upload(source, path: @config.path, filename: @config.filename)
 
         { path: File.join(@config.path, result.name) }
+      rescue Microsoft::Graph::Error => e
+        raise DestinationError, "Failed to upload to OneDrive: #{e.message}"
       end
 
       private

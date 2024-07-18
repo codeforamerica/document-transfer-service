@@ -12,8 +12,12 @@ describe DocumentTransfer::Source::Url do
 
   before do
     allow(Faraday).to receive(:new).and_return(conn)
-    stubs.head(config.url) do
-      [200, { 'Content-Type' => 'application/pdf', 'Content-Length' => '1024' }, '']
+    stubs.get(config.url) do
+      [
+        200,
+        { 'Content-Type' => 'application/pdf', 'Content-Length' => '1024' },
+        'This would be binary data'
+      ]
     end
   end
 
@@ -36,12 +40,6 @@ describe DocumentTransfer::Source::Url do
   end
 
   describe '#fetch' do
-    before do
-      stubs.get(config.url) do
-        [200, {}, 'This would be binary data']
-      end
-    end
-
     it 'returns the file contents' do
       expect(source.fetch).to eq('This would be binary data')
     end

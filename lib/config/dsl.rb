@@ -24,6 +24,8 @@ module DocumentTransfer
       end
 
       def format_value(option, value)
+        return value if value.is_a?(options[option][:type])
+
         case options[option][:type]
         when Symbol then value.to_sym
         when String then value.to_s

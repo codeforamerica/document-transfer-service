@@ -33,7 +33,8 @@ module DocumentTransfer
         filename ||= source.filename
         endpoint = "/drives/#{drive_id}/items/root:/#{path}#{filename}:/content"
 
-        client.put(endpoint, body: source.fetch, headers: { 'Content-Type' => source.mime_type })
+        client.put(endpoint, body: source.fetch,
+                             headers: { 'Content-Type' => source.mime_type })
       end
 
       private

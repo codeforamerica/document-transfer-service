@@ -13,11 +13,22 @@ module DocumentTransfer
         @config = config
       end
 
+      # Fetches the document from the source.
+      #
+      # @return [String] The document content.
+      #
+      # @raise [NotImplementedError] If the method is not implemented by the subclass.
+      # @raise [SourceError] If the document cannot be retrieved.
+      def fetch
+        raise NotImplementedError
+      end
+
       # Returns the name of the document.
       #
       # @return [String]
       #
       # @raise [NotImplementedError] If the method is not implemented by the subclass.
+      # @raise [SourceError] If the size cannot be retrieved.
       def filename
         raise NotImplementedError
       end
@@ -27,6 +38,7 @@ module DocumentTransfer
       # @return [String]
       #
       # @raise [NotImplementedError] If the method is not implemented by the subclass.
+      # @raise [SourceError] If the mime-type cannot be retrieved.
       def mime_type
         raise NotImplementedError
       end

@@ -6,6 +6,7 @@ module DocumentTransfer
   # Destination base module.
   module Destination
     class InvalidDestinationError < ArgumentError; end
+    class DestinationError < RuntimeError; end
 
     # Load the appropriate destination based on the configuration.
     #

@@ -19,6 +19,7 @@ module DocumentTransfer
       # @return [Hash] The result of the transfer.
       #
       # @raise [NotImplementedError] If the method is not implemented by the subclass.
+      # @raise [DestinationError] If the transfer fails.
       def transfer(source)
         raise NotImplementedError
       end
