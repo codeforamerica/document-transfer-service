@@ -16,7 +16,7 @@ module DocumentTransfer
         super unless options.key?(name)
 
         @params[name] = format_value(name, args.first) if args.any?
-        @params[name] || options[name]&.[](:default)
+        format_value(name, @params[name] || options[name]&.[](:default))
       end
 
       def respond_to_missing?(name, include_private = false)
@@ -26,9 +26,9 @@ module DocumentTransfer
       def format_value(option, value)
         return value if value.is_a?(options[option][:type])
 
-        case options[option][:type]
-        when Symbol then value.to_sym
-        when String then value.to_s
+        case options[option][:type].name
+        when 'Symbol' then value.to_sym
+        when 'String' then value.to_s
         else value
         end
       end
@@ -37,15 +37,13 @@ module DocumentTransfer
       #
       # @todo Can we do this without using class variables?
       module ClassMethods
-        # rubocop:disable Style/ClassVars
         def option(name, opts = {})
-          class_variable_set(:@@options, options.merge({ name => opts }))
+          options.merge!({ name => opts })
         end
 
         def options
-          class_variable_defined?(:@@options) ? class_variable_get(:@@options) : {}
+          @options ||= {}
         end
-        # rubocop:enable Style/ClassVars
       end
     end
   end
