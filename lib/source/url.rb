@@ -13,21 +13,29 @@ module DocumentTransfer
       end
 
       def mime_type
-        head.headers['content-type']
+        response.headers['content-type']
       end
 
       def fetch
-        client.get(@config.url).body
+        response.body
       end
 
       def size
-        head.headers['content-length']
+        response.headers['content-length']
       end
 
       private
 
       def client
-        @client ||= Faraday.new(@config.url)
+        @client ||= Faraday.new do |conn|
+          conn.use Faraday::Response::RaiseError
+        end
+      end
+
+      def response
+        @response ||= client.get(@config.url)
+      rescue Faraday::Error => e
+        raise SourceError, "Failed to fetch URL: #{e.message}"
       end
 
       def head

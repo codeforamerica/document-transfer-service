@@ -6,6 +6,7 @@ module DocumentTransfer
   # Source base module.
   module Source
     class InvalidSourceError < ArgumentError; end
+    class SourceError < RuntimeError; end
 
     # Load the appropriate source based on the configuration.
     #
