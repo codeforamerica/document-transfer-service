@@ -19,10 +19,11 @@ if ENV.fetch('COVERAGE', false)
 end
 
 # Connect to a test database and run migrations.
-ENV['DATABASE_URL'] = 'sqlite://memory'
+ENV['DATABASE_ADAPTER'] = 'sqlite'
+ENV['DATABASE_NAME'] = ':memory:'
 ENV['BASE_DATABASE'] = ''
 Sequel.extension :migration
-db = Sequel.connect(ENV.fetch('DATABASE_URL'))
+db = Sequel.connect('sqlite::memory:')
 Sequel::Migrator.run(db, 'db')
 
 # We need to build a Rack app for testing. This ensures that we're including the

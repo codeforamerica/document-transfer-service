@@ -16,7 +16,7 @@ require_relative 'lib/model'
 
 # Connect to the database.
 config = DocumentTransfer::Config::Application.from_environment
-Sequel.connect(config.database_url)
+Sequel.connect(config.database_credentials)
 
 # Load all models.
 DocumentTransfer::Model.load
