@@ -16,6 +16,8 @@ module DocumentTransfer
         def define(args, &task_block)
           desc 'Reset the database'
           task(name, *args) do |_, _task_args|
+            raise EnvironmentError, 'Cannot drop the production database' if config.prod?
+
             ::Rake::Task['db:drop'].invoke(task_block)
             ::Rake::Task['db:setup'].invoke(task_block)
           end

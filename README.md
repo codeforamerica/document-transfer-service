@@ -73,11 +73,9 @@ recommend using a virtual environment manager such as [RVM] to manage your Ruby
 installations. The required version of Ruby is defined in the
 [`.ruby-version`][ruby-version] file.
 
-You will also need a database for the service to store data. The service is
-designed to work with a PostgreSQL database. You can configure the database
-using the `DATABASE_URL` environment variable. The `sample.env` file assumes
-you can connect to a database at `localhost:5432`. You can update this in your
-`.env` file.
+You will also need a database for the service to store data. Please review the
+[database documentation][database] for more information on how to configure the
+service to connect to your database before proceeding.
 
 With ruby installed and the database configured, install gem dependencies and
 set up the database with the following:
@@ -129,6 +127,7 @@ service.
 [.env]: ./sample.env
 [api]: ./doc/api.md
 [create-key]: ./doc/runbooks/create_auth_key.md
+[database]: ./doc/database.md
 [destination]: ./doc/destinations.md
 [Dockerfile]: ./Dockerfile
 [docker compose]: ./docker-compose.yaml
