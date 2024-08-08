@@ -18,7 +18,7 @@ You can configure the database using the environment variables below. The
 | `DATABASE_PORT`     | The port of the database server.                                              | `5432`              | no       |
 | `DATABASE_USER`     | The user to connect to the database as.                                       | `postgres`          | no       |
 
-Note tha while the adapted can be changed, the service is designed to work with
+Note that while the adapted can be changed, the service is designed to work with
 PostgreSQL, and therefore only bundles the `pg` gem by default in production.
 `sqlite3` is included in test environments for testing purposes, and is not
 supported for production use.
