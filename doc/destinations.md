@@ -40,6 +40,10 @@ The following environment variables must be set on the service:
 | filename | The path in the drive to upload the file to. | `string` | `source.filename` | NO       |
 | path     | The path in the drive to upload the file to. | `string` | `""`              | NO       |
 
+If the `filename` parameter is not provided, the service will use the filename
+from the source. If the source URL does not contain a filename, such as when
+using an S3 presigned url, this may result in your transfer failing.
+
 ### Example request
 
 ```json

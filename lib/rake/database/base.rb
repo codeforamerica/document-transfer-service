@@ -15,15 +15,14 @@ module DocumentTransfer
         #
         # @return [String]
         def db_name
-          url = URI.parse(config.database_url)
-          url.path[1..] || ''
+          config.database_name
         end
 
         # Connect to the database for the duration of the provided block.
         #
         # @yieldparam [Sequel::Database]
         def db_connection(&)
-          Sequel.connect(config.database_url, &)
+          Sequel.connect(config.database_credentials, &)
         end
 
         # Connect to the base database for the duration of the provided block.
@@ -32,9 +31,10 @@ module DocumentTransfer
         #
         # @yieldparam [Sequel::Database]
         def base_db_connection(&)
-          url = URI.parse(config.database_url)
-          url.path = "/#{config.base_database}"
-          Sequel.connect(url.to_s, &)
+          Sequel.connect(
+            config.database_credentials.merge(database: config.base_database),
+            &
+          )
         end
       end
     end

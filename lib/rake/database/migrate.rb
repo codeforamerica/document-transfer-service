@@ -20,7 +20,7 @@ module DocumentTransfer
             version = task_args.to_a.first if task_args
             db_connection do |db|
               yield(*[self, :pre, task_args].slice(0, task_block.arity)) if task_block
-              Sequel::Migrator.run(db, 'db/migrations', target: version)
+              Sequel::Migrator.run(db, 'db/migrations', target: version&.to_i)
               yield(*[self, :post, task_args].slice(0, task_block.arity)) if task_block
             end
           end

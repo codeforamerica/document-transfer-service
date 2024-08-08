@@ -6,7 +6,7 @@ require_relative 'lib/config/application'
 require_relative 'lib/model'
 
 config = DocumentTransfer::Config::Application.from_environment
-Sequel.connect(config.database_url)
+Sequel.connect(config.database_credentials)
 
 DocumentTransfer::Model.load
 
@@ -14,7 +14,7 @@ color = "\e[1;32m"
 color = "\e[1;31m" if config.prod?
 color = "\e[1;33m" if config.prod_like?
 
-Pry.config.prompt_name = "document_transfer(#{config.environment})"
+Pry.config.prompt_name = "document-transfer(#{config.environment})"
 Pry.config.prompt = Pry::Prompt.new(
   :document_transfer,
   'Document transfer console prompt',
