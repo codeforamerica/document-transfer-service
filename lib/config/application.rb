@@ -15,11 +15,15 @@ module DocumentTransfer
       option :database_user, type: String, default: 'postgres'
       option :environment, type: String, default: 'development',
                            env_variable: 'RACK_ENV'
+      option :log_level, type: String, default: 'info'
+      option :port, type: Integer, default: 3000,
+                    env_variable: 'RACK_PORT'
+      option :queue_stats_interval, type: Integer, default: 10
 
-      def database_credentials
+      def database_credentials(base: false)
         {
           adapter: database_adapter,
-          database: database_name,
+          database: base ? base_database : database_name,
           host: database_host,
           password: database_password,
           port: database_port,
@@ -33,6 +37,10 @@ module DocumentTransfer
 
       def prod_like?
         %w[demo staging].include?(environment)
+      end
+
+      def test?
+        %w[testing test].include?(environment)
       end
     end
   end

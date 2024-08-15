@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'delayed/command'
+
+require_relative '../lib/bootstrap/worker'
+require_relative '../lib/config/application'
+
+# Bootstrap the worker.
+config = DocumentTransfer::Config::Application.from_environment
+DocumentTransfer::Bootstrap::Worker.new(config).bootstrap
+
+Delayed::Command.new(ARGV).daemonize

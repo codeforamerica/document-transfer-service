@@ -14,7 +14,7 @@ module DocumentTransfer
         private
 
         def define(args, &task_block)
-          desc 'Reset the database'
+          desc 'Setup the database'
           task(name, *args) do |_, _task_args|
             ::Rake::Task['db:create'].invoke(task_block)
             ::Rake::Task['db:migrate'].invoke(task_block)

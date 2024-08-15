@@ -3,7 +3,7 @@
 require 'semantic_logger'
 
 require_relative 'request_id'
-require_relative '../util/measure'
+require_relative '../../util/measure'
 
 module DocumentTransfer
   module API

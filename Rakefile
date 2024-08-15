@@ -6,6 +6,15 @@ require 'rubocop/rake_task'
 
 require_relative 'lib/document_transfer'
 
+require_relative 'lib/bootstrap/rake'
+require_relative 'lib/config/application'
+
+require_relative 'lib/api/api'
+
+# Bootstrap the application for rake.
+config = DocumentTransfer::Config::Application.from_environment
+DocumentTransfer::Bootstrap::Rake.new(config).bootstrap
+
 task default: %i[spec rubocop]
 
 task :environment do # rubocop:disable Rake/Desc
@@ -19,6 +28,3 @@ RuboCop::RakeTask.new(:rubocop) do |task|
 end
 
 RSpec::Core::RakeTask.new(:spec)
-
-# Load our custom tasks.
-DocumentTransfer.load_rake_tasks

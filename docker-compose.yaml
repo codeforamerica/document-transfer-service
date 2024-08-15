@@ -1,27 +1,25 @@
+
+x-service-defaults: &service-defaults
+  build: .
+  depends_on:
+    db:
+      condition: service_healthy
+  restart: always
+  environment:
+    ONEDRIVE_CLIENT_ID: ${ONEDRIVE_CLIENT_ID}
+    ONEDRIVE_CLIENT_SECRET: ${ONEDRIVE_CLIENT_SECRET}
+    ONEDRIVE_DRIVE_ID: ${ONEDRIVE_DRIVE_ID}
+    ONEDRIVE_TENANT_ID: ${ONEDRIVE_TENANT_ID}
+    DATABASE_USER: ${DATABASE_USER:-postgres}
+    DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+    DATABASE_HOST: db
+    DATABASE_NAME: ${POSTGRES_DB:-document_transfer}
+  volumes:
+    - .:/opt/app
+
 services:
   api:
-    build: .
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: always
-    environment:
-      ONEDRIVE_CLIENT_ID: ${ONEDRIVE_CLIENT_ID}
-      ONEDRIVE_CLIENT_SECRET: ${ONEDRIVE_CLIENT_SECRET}
-      ONEDRIVE_DRIVE_ID: ${ONEDRIVE_DRIVE_ID}
-      ONEDRIVE_TENANT_ID: ${ONEDRIVE_TENANT_ID}
-      DATABASE_USER: ${DATABASE_USER:-postgres}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      DATABASE_HOST: db
-      DATABASE_NAME: ${POSTGRES_DB:-document_transfer}
-    volumes:
-      - .:/opt/app
-    ports:
-      - "3000:${PORT:-3000}"
-    command: >
-      bash -c "bundle install
-      && bundle exec rake db:setup
-      && bundle exec rackup --port 3000 --host 0.0.0.0"
+    <<: *service-defaults
 
   db:
     image: postgres:16
@@ -41,6 +39,10 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
+
+  worker:
+    <<: *service-defaults
+    command: ./script/worker run
 
 volumes:
   postgres:

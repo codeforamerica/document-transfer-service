@@ -5,7 +5,7 @@ require 'statsd-instrument'
 
 require_relative 'correlation_id'
 require_relative 'request_id'
-require_relative '../util/measure'
+require_relative '../../util/measure'
 
 module DocumentTransfer
   module API
@@ -15,7 +15,7 @@ module DocumentTransfer
         include DocumentTransfer::Util::Measure
 
         DEFAULT_TAGS = %W[
-          service:document-transfer-service
+          service:#{DocumentTransfer::NAME}
           version:#{DocumentTransfer::VERSION}
           environment:#{ENV.fetch('RACK_ENV', 'development')}
         ].freeze
