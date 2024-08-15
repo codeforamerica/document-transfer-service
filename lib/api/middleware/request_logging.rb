@@ -23,15 +23,15 @@ module DocumentTransfer
 
         # Initialize the middleware
         #
-        # @param [Rack::Events] app The Rack application.
+        # @param app [Rack::Events] The Rack application.
         def initialize(app)
           @app = app
         end
 
         # Log the request and response details.
         #
-        # @param [Hash] env The environment hash.
-        # @return [Array<Integer, Rack::Headers, Rack::BodyProxy] The response
+        # @param env [Hash] The environment hash.
+        # @return [Array<Integer, Rack::Headers, Rack::BodyProxy>] The response
         #   for the request.
         def call(env)
           response, time = measure { @app.call(env) }
@@ -43,14 +43,14 @@ module DocumentTransfer
 
         # Fetches the content length for the response.
         #
-        # @param [Rack::Headers] headers The response headers.
+        # @param headers [Rack::Headers] The response headers.
         def content_length(headers)
           headers[Rack::CONTENT_LENGTH] || '-'
         end
 
         # Fetches the query string from the request.
         #
-        # @param [Rack::Request] request The request.
+        # @param request [Rack::Request] The request.
         def query_string(request)
           request.query_string.empty? ? '' : "?#{request.query_string}"
         end
@@ -62,17 +62,17 @@ module DocumentTransfer
         # instead ensures we get the request id if it was added by our
         # middleware.
         #
-        # @param [Hash] env The environment hash.
+        # @param env [Hash] The environment hash.
         def request_id(env)
           env.fetch(RequestId::KEY, '-')
         end
 
         # Log the request details.
         #
-        # @param [Integer] status The HTTP status code.
-        # @param [Rack::Headers] headers The response headers.
-        # @param [Hash] env The environment hash.
-        # @param [Float] duration The duration of the request.
+        # @param status [Integer] The HTTP status code.
+        # @param headers [Rack::Headers] The response headers.
+        # @param env [Hash] The environment hash.
+        # @param duration [Float] The duration of the request.
         def log(status, headers, env, duration)
           SemanticLogger.push_named_tags(DEFAULT_TAGS)
           logger.info(
@@ -84,10 +84,10 @@ module DocumentTransfer
 
         # Builds the payload for the log message.
         #
-        # @param [Integer] status The HTTP status code.
-        # @param [Rack::Headers] headers The response headers.
-        # @param [Hash] env The environment hash.
-        # @param [Float] duration The duration of the request.
+        # @param status [Integer] The HTTP status code.
+        # @param headers [Rack::Headers] The response headers.
+        # @param env [Hash] The environment hash.
+        # @param duration [Float] The duration of the request.
         # @return [Hash]
         def payload(status, headers, env, duration)
           request = Rack::Request.new(env)

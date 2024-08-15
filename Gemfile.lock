@@ -267,6 +267,9 @@ GEM
       rubocop (~> 1.61)
     rubocop-sequel (0.3.4)
       rubocop (~> 1.0)
+    rubocop-yard (0.9.3)
+      rubocop (~> 1.21)
+      yard
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     semantic_logger (4.16.0)
@@ -297,6 +300,7 @@ GEM
     uri (0.13.0)
     uri_template (0.7.0)
     webrick (1.8.1)
+    yard (0.9.36)
     zeitwerk (2.6.16)
 
 PLATFORMS
@@ -331,6 +335,7 @@ DEPENDENCIES
   rubocop-rake (~> 0.6)
   rubocop-rspec (~> 2.22)
   rubocop-sequel (~> 0.3)
+  rubocop-yard (~> 0.9.3)
   simplecov (~> 0.22)
   sqlite3 (~> 2.0)
 

@@ -33,7 +33,7 @@ module DocumentTransfer
 
         # Report stats to StatsD.
         #
-        # @param [DocumentTransfer::Job::Queue] queue Queue to report stats for.
+        # @param queue [DocumentTransfer::Job::Queue] Queue to report stats for.
         # @return [void]
         def report(queue)
           stats = queue.stats

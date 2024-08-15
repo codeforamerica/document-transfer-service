@@ -52,9 +52,9 @@ module Delayed
         # Gain an exclusive lock on the job so that it doesn't get picked up by
         # another worker.
         #
-        # @param [Integer] max_run_time the maximum time a job is allowed to run
+        # @param max_run_time [Integer] the maximum time a job is allowed to run
         #   before it is considered dead.
-        # @param [String] worker the name of the worker that is trying to lock
+        # @param worker [String] the name of the worker that is trying to lock
         #   this job.
         def lock_exclusively!(max_run_time, worker)
           locked = regain_lock(worker) || claim_lock(worker, max_run_time)
@@ -76,7 +76,7 @@ module Delayed
 
           # Clear all locks from this worker.
           #
-          # @param [String] worker the name of the worker to clear the locks
+          # @param worker [String] the name of the worker to clear the locks
           #   for.
           def clear_locks!(worker)
             Job.where(locked_by: worker)
@@ -85,9 +85,9 @@ module Delayed
 
           # Find jobs that are available to be run.
           #
-          # @param [String] _worker The name of the worker trying to find a job.
-          # @param [Integer] limit The maximum number of jobs to find.
-          # @param [Integer] max_run_time The maximum time a job is allowed to
+          # @param _worker [String] The name of the worker trying to find a job.
+          # @param limit [Integer] The maximum number of jobs to find.
+          # @param max_run_time [Integer] The maximum time a job is allowed to
           #   run.
           # @return [Array<Job>] The jobs that are available to be run.
           # rubocop:disable Metrics/AbcSize
@@ -112,7 +112,7 @@ module Delayed
 
         # Regain the lock on a job that was locked by a worker that died.
         #
-        # @param [String] worker the name of the worker trying to lock the job.
+        # @param worker [String] the name of the worker trying to lock the job.
         # @return [Boolean] Whether or not the lock was obtained.
         def regain_lock(worker)
           return false unless locked_by == worker
@@ -122,8 +122,8 @@ module Delayed
 
         # Claim a lock on the job.
         #
-        # @param [String] worker the name of the worker trying to lock the job.
-        # @param [Integer] max_run_time the maximum time a job is allowed to run
+        # @param worker [String] the name of the worker trying to lock the job.
+        # @param max_run_time [Integer] the maximum time a job is allowed to run
         #   before it is considered dead.
         # @return [Boolean] Whether or not the lock was obtained.
         def claim_lock(worker, max_run_time)

@@ -22,7 +22,7 @@ module DocumentTransfer
 
         # Initialize the middleware
         #
-        # @param [Rack::Events] app The Rack application.
+        # @param app [Rack::Events] The Rack application.
         def initialize(app)
           @app = app
         end
@@ -34,8 +34,8 @@ module DocumentTransfer
         # executed. Additionally, we want to include the HTTP status code in the
         # tags.
         #
-        # @param [Hash] env The environment hash.
-        # @return [Array<Integer, Rack::Headers, Rack::BodyProxy] The response
+        # @param env [Hash] The environment hash.
+        # @return [Array<Integer, Rack::Headers, Rack::BodyProxy>] The response
         #   for the request.
         def call(env)
           telemetry_attributes(env)
@@ -57,7 +57,7 @@ module DocumentTransfer
 
         # Fetches the name for the endpoint we're instrumenting.
         #
-        # @param [Grape::Endpoint] endpoint The Grape endpoint.
+        # @param endpoint [Grape::Endpoint] The Grape endpoint.
         # @return [String]
         def endpoint_name(endpoint)
           endpoint.options[:route_options][:endpoint_name] ||
@@ -70,7 +70,7 @@ module DocumentTransfer
         # We use the namespace and path of the endpoint, stripping any "/" and
         # joining the parts with a ".".
         #
-        # @param [Grape::Endpoint] endpoint The Grape endpoint.
+        # @param endpoint [Grape::Endpoint] The Grape endpoint.
         # @return [String]
         def build_endpoint_name(endpoint)
           parts = (endpoint.namespace.split('/') +
@@ -81,7 +81,7 @@ module DocumentTransfer
 
         # Adds OpenTelemetry attributes to the current span.
         #
-        # @param [Hash] env The environment hash.
+        # @param env [Hash] The environment hash.
         def telemetry_attributes(env)
           current_span = OpenTelemetry::Trace.current_span
           current_span.add_attributes(
@@ -92,8 +92,8 @@ module DocumentTransfer
 
         # Builds an array of tags to include with our stats.
         #
-        # @param [Grape::Endpoint] endpoint The Grape endpoint.
-        # @param [Integer] status The HTTP status code.
+        # @param endpoint [Grape::Endpoint] The Grape endpoint.
+        # @param status [Integer] The HTTP status code.
         # @return [Array<String>]
         def tags(endpoint, status: nil)
           tags = DEFAULT_TAGS + %W[

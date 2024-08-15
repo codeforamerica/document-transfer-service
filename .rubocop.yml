@@ -3,6 +3,7 @@ require:
   - rubocop-rake
   - rubocop-rspec
   - rubocop-sequel
+  - rubocop-yard
 
 AllCops:
   NewCops: enable
