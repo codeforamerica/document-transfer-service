@@ -1,5 +1,6 @@
 require:
   - rubocop-factory_bot
+  - rubocop-md
   - rubocop-rake
   - rubocop-rspec
   - rubocop-sequel
@@ -18,6 +19,12 @@ AllCops:
 # See https://github.com/rubocop/rubocop-factory_bot/issues/73
 FactoryBot/FactoryAssociationWithStrategy:
   Enabled: false
+
+Layout/InitialIndentation:
+  Exclude:
+    # Runbooks often have indented code blocks and rubocop doesn't like that.
+    # https://github.com/rubocop/rubocop-md/issues/28
+    - doc/runbooks/**/*.md
 
 # Don't let long declarations and invocations to contribute to method length.
 # This is preferable over squeezing them onto a single line.
