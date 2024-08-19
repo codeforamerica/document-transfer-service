@@ -6,6 +6,8 @@ require 'rack/test'
 require 'rspec/uuid'
 require 'sequel'
 
+require_relative '../lib/job'
+
 # Configure code coverage reporting.
 if ENV.fetch('COVERAGE', false)
   require 'simplecov'
@@ -43,6 +45,9 @@ RSpec.configure do |config|
   config.before do
     RSPEC_LOGGER.clear
     allow(SemanticLogger::Logger).to receive(:new).and_return(RSPEC_LOGGER)
+
+    # Unschedule any jobs before running tests.
+    DocumentTransfer::Job.unschedule
   end
 end
 

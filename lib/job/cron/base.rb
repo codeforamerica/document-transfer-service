@@ -6,6 +6,8 @@ module DocumentTransfer
   module Job
     module Cron
       # Base class for recurring cron jobs.
+      #
+      # @abstract Subclass and implement {#perform} to define a cron job.
       class Base < Base
         class_attribute :cron_expression
 

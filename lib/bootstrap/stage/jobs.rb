@@ -12,10 +12,17 @@ module DocumentTransfer
       class Jobs < Base
         # Setup the job queue and schedule recurring jobs.
         def bootstrap
+          configure
+          Job.schedule
+        end
+
+        private
+
+        def configure
           require_relative '../../delayed/backend/sequel'
           Delayed::Worker.backend = Delayed::Backend::Sequel::Job
           Delayed::Worker.logger = SemanticLogger['Delayed::Worker']
-          Job.schedule
+          Delayed::Worker.destroy_failed_jobs = false
         end
       end
     end

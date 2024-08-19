@@ -64,6 +64,10 @@ module Delayed
         end
 
         class << self
+          def db_time_now
+            Time.now
+          end
+
           # Database connections don't like being forked.
           def before_fork
             ::Sequel::DATABASES.each(&:disconnect)

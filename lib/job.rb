@@ -11,7 +11,7 @@ module DocumentTransfer
 
     # Ensure that all cron jobs are scheduled to be run.
     #
-    # @return [Boolean] Reschedules all jobs.
+    # @param force [Boolean] Reschedules all jobs.
     # @return [Integer] The number of jobs scheduled.
     def self.schedule(force: false)
       self.load
@@ -21,6 +21,20 @@ module DocumentTransfer
         next unless job.respond_to?(:reschedule) && job.cron_expression
 
         force ? job.reschedule : job.schedule
+      end.length
+    end
+
+    # Remove any currently scheduled jobs.
+    #
+    # @return [Integer] The number of jobs unscheduled.
+    def self.unschedule
+      self.load
+
+      Cron.constants.select do |klass|
+        job = Cron.const_get(klass)
+        next unless job.respond_to?(:remove) && job.cron_expression
+
+        job.remove
       end.length
     end
   end
