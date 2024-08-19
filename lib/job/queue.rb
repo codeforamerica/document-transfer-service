@@ -28,7 +28,7 @@ module DocumentTransfer
 
       # Age, in seconds, of the oldest non-recurring job in the queue.
       #
-      # @return [Integer]
+      # @return [Float]
       def oldest
         job = Delayed::Job.where(cron: nil, locked_at: nil).order(:run_at).first
         return 0 unless job

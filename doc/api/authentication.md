@@ -10,7 +10,7 @@ header with your request in order to properly authenticate:
 A properly formatted header will similar to the following:
 
 ```http request
-authorization: Bearer realm="c57a46d7-d053-4eea-a6c5-1ec4e3d2f267" MYVJvZ7ay1ecAPU7aXMb26E6bpL5qX57BYY8q7KSyYU= 
+authorization: Bearer realm="c57a46d7-d053-4eea-a6c5-1ec4e3d2f267" MYVJvZ7ay1ecAPU7aXMb26E6bpL5qX57BYY8q7KSyYU=
 ```
 
 ## Creating

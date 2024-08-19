@@ -6,8 +6,6 @@ require 'rack/test'
 require 'rspec/uuid'
 require 'sequel'
 
-require_relative '../lib/job'
-
 # Configure code coverage reporting.
 if ENV.fetch('COVERAGE', false)
   require 'simplecov'
@@ -19,6 +17,10 @@ if ENV.fetch('COVERAGE', false)
     track_files 'lib/**/*.rb'
   end
 end
+
+# Any requires for code that we want to measure coverage for should come after
+# the SimpleCov.start call.
+require_relative '../lib/job'
 
 # Connect to a test database and run migrations.
 ENV['DATABASE_ADAPTER'] = 'sqlite'
@@ -43,6 +45,10 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.before do
+    # Make sure the database is clean before running tests.
+    Sequel::Migrator.run(db, 'db', target: 0)
+    Sequel::Migrator.run(db, 'db')
+
     RSPEC_LOGGER.clear
     allow(SemanticLogger::Logger).to receive(:new).and_return(RSPEC_LOGGER)
 
