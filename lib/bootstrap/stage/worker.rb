@@ -15,18 +15,26 @@ module DocumentTransfer
           environment:#{ENV.fetch('RACK_ENV', 'development')}
         ].freeze
 
+        attr_writer :queue
+
         # Create a separate thread to monitor the queue.
         def bootstrap
           Thread.abort_on_exception = true
           Thread.new do
             require_relative '../../job/queue'
 
-            queue = DocumentTransfer::Job::Queue.new
             loop do
               sleep config.queue_stats_interval
               report(queue)
             end
           end
+        end
+
+        # The queue to get statistics for.
+        #
+        # @return [DocumentTransfer::Job::Queue]
+        def queue
+          @queue ||= DocumentTransfer::Job::Queue.new
         end
 
         private

@@ -9,11 +9,42 @@ module Delayed
   module Backend
     module Sequel
       # Delayed Job Sequel Backend.
-      class Job < ::Sequel::Model
+      class Job < ::Sequel::Model # rubocop:disable Metrics/ClassLength
         include Delayed::Backend::Base
 
         alias save! save
         alias update_attributes update
+
+        dataset_module do
+          # Finds jobs that are ready to be run.
+          #
+          # @param worker [String] The name of the worker trying to find a job.
+          # @param max_run_time [Integer] The maximum time a job is allowed to
+          #   run.
+          # @return [Sequel::Dataset] The dataset of jobs that are ready to be
+          #   run.
+          def ready_to_run(worker, max_run_time)
+            db_time_now = model.db_time_now
+            filter do
+              (
+                ((run_at <= db_time_now) &
+                  ::Sequel.expr(locked_at: nil)) |
+                  (::Sequel.expr(locked_at: ..(db_time_now - max_run_time))) |
+                  { locked_by: worker }
+              ) & { failed_at: nil }
+            end
+          end
+
+          # Orders jobs by priority and their run time.
+          #
+          # @return [Sequel::Dataset] The dataset of jobs ordered by priority.
+          def by_priority
+            order(
+              ::Sequel.expr(:priority).asc,
+              ::Sequel.expr(:run_at).asc
+            )
+          end
+        end
 
         # Before saving, make sure the job has been scheduled.
         def before_save
@@ -24,7 +55,10 @@ module Delayed
 
         # Don't destroy recurring jobs that need to be rescheduled.
         def destroy
-          return super unless payload_object.schedule_instead_of_destroy && cron
+          if !payload_object.respond_to?(:reschedule_instead_of_destroy) ||
+             !(cron && payload_object.reschedule_instead_of_destroy)
+            return super
+          end
 
           schedule_next_run
         end
@@ -42,11 +76,6 @@ module Delayed
           return unless cron
 
           self.run_at = Fugit::Cron.do_parse(cron).next_time(now).to_local_time
-        end
-
-        def name
-          x = super
-          x + " (#{pk})"
         end
 
         # Gain an exclusive lock on the job so that it doesn't get picked up by
@@ -87,31 +116,68 @@ module Delayed
                .update(locked_at: nil, locked_by: nil)
           end
 
+          # Deletes all jobs in the queue.
+          def delete_all
+            dataset.delete
+          end
+
           # Find jobs that are available to be run.
           #
-          # @param _worker [String] The name of the worker trying to find a job.
+          # @param worker [String] The name of the worker trying to find a job.
           # @param limit [Integer] The maximum number of jobs to find.
           # @param max_run_time [Integer] The maximum time a job is allowed to
           #   run.
-          # @return [Array<Job>] The jobs that are available to be run.
-          # rubocop:disable Metrics/AbcSize
-          def find_available(_worker, limit = 5, max_run_time = Worker.max_run_time)
-            query = Job.where(run_at: ..Time.now)
-                       .where { ::Sequel[locked_at: nil] | ::Sequel[locked_at: ..(Time.now - max_run_time)] }
-                       .where(failed_at: nil)
-            query = query.where(priority: Worker.min_priority..) if Worker.min_priority
-            query = query.where(priority: ..Worker.max_priority) if Worker.max_priority
-            query = query.where(queue: Worker.queues) if Worker.queues.any?
+          # @return [Sequel::Dataset] The jobs that are available to be run.
+          def find_available(worker, limit = 5, max_run_time = Worker.max_run_time)
+            ds = ready_to_run(worker, max_run_time)
+            ds = ds.where(priority: Worker.min_priority..) if Worker.min_priority
+            ds = ds.where(priority: ..Worker.max_priority) if Worker.max_priority
+            ds = ds.where(queue: Worker.queues) if Worker.queues.any?
 
-            query.limit(limit).order(:priority).order_append(:run_at).all
+            ds.limit(limit).by_priority
           end
-          # rubocop:enable Metrics/AbcSize
+
+          # Reserves a job for this worker.
+          #
+          # @param worker [Delayed::Worker] The worker that is trying to reserve
+          #   a job.
+          # @param max_run_time [Integer] The maximum time a job is allowed to
+          #   run.
+          # @return [Job] The job that was reserved.
+          def reserve(worker, max_run_time = Worker.max_run_time)
+            lock_with_for_update(
+              find_available(worker, 1, max_run_time),
+              worker
+            )
+          end
+
+          # Locks an individual job for a worker.
+          #
+          # This method uses a database lock to prevent other workers from
+          # claiming this job.
+          #
+          # @param records [Sequel::Dataset] The dataset to lock a job from.
+          # @param worker [Delayed::Worker] The worker that is trying to lock
+          #   the job.
+          # @return [Job] The job that was locked.
+          def lock_with_for_update(records, worker)
+            records = records.for_update
+            db.transaction do
+              job = records.first
+              if job
+                job.locked_at = db_time_now
+                job.locked_by = worker
+                job.save(raise_on_failure: true)
+                job
+              end
+            end
+          end
         end
 
         private
 
         def now
-          @now ||= Time.now
+          @now ||= self.class.db_time_now
         end
 
         # Regain the lock on a job that was locked by a worker that died.
@@ -131,8 +197,12 @@ module Delayed
         #   before it is considered dead.
         # @return [Boolean] Whether or not the lock was obtained.
         def claim_lock(worker, max_run_time)
+          now = self.class.db_time_now
           Job.where(id:, run_at: ..now)
-             .where { (locked_at.nil?) | (locked_at < now - max_run_time) }
+             .where do
+               ::Sequel.expr(locked_at: nil) |
+                 ::Sequel.expr(locked_at: ..(now - max_run_time))
+             end
              .update(locked_at: now, locked_by: worker) == 1
         end
       end

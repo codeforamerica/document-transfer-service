@@ -58,6 +58,6 @@ RSpec.configure do |config|
 end
 
 # Include shared examples and factories.
+require_relative 'support/contexts'
 require_relative 'support/examples'
 require_relative 'support/factories'
-require_relative 'support/contexts'

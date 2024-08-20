@@ -10,6 +10,10 @@ module DocumentTransfer
     module Stage
       # Bootstrap the prompt for the console.
       class Prompt < Base
+        COLOR_GREEN = "\e[1;32m"
+        COLOR_RED = "\e[1;31m"
+        COLOR_YELLOW = "\e[1;33m"
+
         # Configure the prompt for the console.
         #
         # This will set the prompt name and color based on the environment to
@@ -37,10 +41,10 @@ module DocumentTransfer
         # @return [String]
         # @link https://gist.github.com/JBlond/2fea43a3049b38287e5e9cefc87b2124
         def color
-          return "\e[1;31m" if config.prod?
-          return "\e[1;33m" if config.prod_like?
+          return COLOR_RED if config.prod?
+          return COLOR_YELLOW if config.prod_like?
 
-          "\e[1;32m"
+          COLOR_GREEN
         end
       end
     end
