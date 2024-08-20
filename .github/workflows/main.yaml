@@ -15,9 +15,9 @@ jobs:
           fetch-depth: 1
       - run: git fetch origin main --depth=1
       - name: RuboCop Linter
-        uses: andrewmcodes/rubocop-linter-action@v3.3.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: reclaim-the-stack/rubocop-action@v1
+        with:
+          gem_versions: Gemfile
 
   spec:
     runs-on: ubuntu-latest
