@@ -25,6 +25,8 @@ GrapeSwagger::Rake::OapiTasks.new('::DocumentTransfer::API::API')
 
 RuboCop::RakeTask.new(:rubocop) do |task|
   task.requires << 'rubocop'
+  task.formatters = %w[pacman]
+  task.formatters << 'github' if ENV.fetch('GITHUB_ACTIONS', false)
 end
 
 RSpec::Core::RakeTask.new(:spec)

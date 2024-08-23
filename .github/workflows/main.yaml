@@ -15,9 +15,7 @@ jobs:
           fetch-depth: 1
       - run: git fetch origin main --depth=1
       - name: RuboCop Linter
-        uses: reclaim-the-stack/rubocop-action@v1.1.0
-        with:
-          gem_versions: Gemfile
+        run: bundle exec rubocop
 
   spec:
     runs-on: ubuntu-latest
