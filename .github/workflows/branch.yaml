@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: git fetch origin main --depth=1
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
       - name: RuboCop Linter
         run: bundle exec rubocop
 
