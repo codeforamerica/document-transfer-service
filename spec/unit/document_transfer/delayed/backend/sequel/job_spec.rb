@@ -6,6 +6,7 @@ RSpec.describe Delayed::Backend::Sequel::Job do
   subject!(:job) { create(:job, params) }
 
   let(:params) { {} }
+  let(:worker) { instance_double(Delayed::Worker, name: 'rspec') }
 
   describe '.clear_locks!' do
     let(:params) { super().merge(locked_by: 'rspec', locked_at: Time.now) }
@@ -19,7 +20,7 @@ RSpec.describe Delayed::Backend::Sequel::Job do
 
   describe '.reserve' do
     it 'reserves the first job available' do
-      expect { described_class.reserve('rspec', 300) }.to \
+      expect { described_class.reserve(worker, 300) }.to \
         change { job.refresh.locked_by }.to('rspec').and(change { job.refresh.locked_at })
     end
   end

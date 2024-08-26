@@ -146,7 +146,7 @@ module Delayed
           # @return [Job] The job that was reserved.
           def reserve(worker, max_run_time = Worker.max_run_time)
             lock_with_for_update(
-              find_available(worker, 1, max_run_time),
+              find_available(worker.name, 1, max_run_time),
               worker
             )
           end
@@ -166,7 +166,7 @@ module Delayed
               job = records.first
               if job
                 job.locked_at = db_time_now
-                job.locked_by = worker
+                job.locked_by = worker.name
                 job.save(raise_on_failure: true)
                 job
               end
