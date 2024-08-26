@@ -4,4 +4,11 @@
 require 'bundler/setup'
 require 'rackup'
 
-Rackup::Server.start
+require_relative '../lib/config/application'
+
+config = DocumentTransfer::Config::Application.from_environment
+
+# Configure and start the server.
+server = Rackup::Server.new
+server.options = server.options.merge(Port: config.port)
+server.start
