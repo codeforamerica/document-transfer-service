@@ -68,7 +68,7 @@ module DocumentTransfer
       #
       # Record the duration of the job.
       def after
-        StatsD.measure('jobs.duration', clock_time - @start, tags:)
+        StatsD.measure('jobs.completed.duration', clock_time - @start, tags:)
       end
 
       private

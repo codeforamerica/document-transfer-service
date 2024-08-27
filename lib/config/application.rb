@@ -18,7 +18,7 @@ module DocumentTransfer
       option :log_level, type: String, default: 'info'
       option :port, type: Integer, default: 3000,
                     env_variable: 'RACK_PORT'
-      option :queue_stats_interval, type: Integer, default: 10
+      option :queue_stats_interval, type: Integer, default: 30
 
       def database_credentials(base: false)
         {
