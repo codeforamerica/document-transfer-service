@@ -11,7 +11,9 @@ RSpec.shared_examples 'bootstrap_stages' do |stages|
     DocumentTransfer::Bootstrap.load_stages
 
     stages.to_h do |stage|
-      klass = DocumentTransfer::Bootstrap::Stage.const_get(stage.capitalize)
+      klass = DocumentTransfer::Bootstrap::Stage.const_get(
+        stage.to_s.split('_').map(&:capitalize).join
+      )
       double = instance_double(klass, bootstrap: nil)
       allow(klass).to receive(:new).and_return(double)
       [stage, double]

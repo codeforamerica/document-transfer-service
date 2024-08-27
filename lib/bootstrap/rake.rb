@@ -3,6 +3,7 @@
 require_relative 'stage/database'
 require_relative 'stage/jobs'
 require_relative 'stage/logger'
+require_relative 'stage/rake_tasks'
 
 module DocumentTransfer
   module Bootstrap
@@ -25,6 +26,8 @@ module DocumentTransfer
         rescue Sequel::DatabaseConnectionError => e
           warn("Database connection error: #{e.message}")
         end
+
+        Stage::RakeTasks.new(@config).bootstrap
       end
     end
   end
