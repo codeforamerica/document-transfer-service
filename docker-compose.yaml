@@ -20,6 +20,8 @@ x-service-defaults: &service-defaults
 services:
   api:
     <<: *service-defaults
+    ports:
+      - "3000:3000"
 
   db:
     image: postgres:16
