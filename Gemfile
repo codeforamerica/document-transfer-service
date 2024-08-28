@@ -13,9 +13,11 @@ group :development do
   gem 'rake', '~> 13.0'
   gem 'rubocop', '~> 1.48'
   gem 'rubocop-factory_bot', '~> 2.23'
+  gem 'rubocop-md', '~> 1.2'
   gem 'rubocop-rake', '~> 0.6'
   gem 'rubocop-rspec', '~> 2.22'
   gem 'rubocop-sequel', '~> 0.3'
+  gem 'rubocop-yard', '~> 0.9.3'
 end
 
 group :test do

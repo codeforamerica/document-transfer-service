@@ -12,7 +12,7 @@ require_relative 'setup'
 module DocumentTransfer
   module Rake
     module Database
-      # Rake tasks for managing the database.
+      # Rake namespace for managing the database.
       class Database < Rake::Base
         class EnvironmentError < RuntimeError; end
 

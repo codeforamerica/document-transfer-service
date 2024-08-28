@@ -14,15 +14,15 @@ module DocumentTransfer
 
         # Initialize the middleware
         #
-        # @param [Rack::Events] app The Rack application.
+        # @param app [Rack::Events] The Rack application.
         def initialize(app)
           @app = app
         end
 
         # Ensure that the request has a request id.
         #
-        # @param [Hash] env The environment hash.
-        # @return [Array<Integer, Rack::Headers, Rack::BodyProxy] The response
+        # @param env [Hash] The environment hash.
+        # @return [Array<Integer, Rack::Headers, Rack::BodyProxy>] The response
         #   for the request.
         def call(env)
           # Prefer the existing request id, if it exists.

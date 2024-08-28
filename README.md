@@ -38,7 +38,7 @@ service.
 Using docker compose, the application code will be mounted from your local
 system to the running container. This will allow you to make changes to the
 code and see them reflected in the running service without having to rebuild the
-image.
+image. Using docker compose will launch the api, the worker, and a database. 
 
 To run the service with docker compose, make sure you have [Docker Desktop]
 installed and run the following:
@@ -88,10 +88,18 @@ bundle exec rake db:setup
 You should now be able to start the service with:
 
 ```sh
-bundle exec rackup
+./script/api
 ```
 
 The service should now be available at `http://localhost:9292`.
+
+#### Running the worker
+
+The worker is a separate process that is responsible for processing background
+jobs. Depending on the parts of the service you're using, you may need to run
+the worker alongside the API.
+
+To run the worker, see the [worker documentation][worker] for more information.
 
 #### Updating the service
 
@@ -136,3 +144,4 @@ service.
 [ruby-version]: ./.ruby-version
 [rvm]: https://rvm.io/
 [source]: ./doc/sources.md
+[worker]: ./doc/worker.md

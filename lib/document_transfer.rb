@@ -10,7 +10,9 @@ module DocumentTransfer
   # Load all of our custom rake tasks.
   def self.load_rake_tasks
     require_relative 'rake/database/database'
+    require_relative 'rake/jobs/jobs'
 
     Rake::Database::Database.new
+    Rake::Jobs::Jobs.new
   end
 end

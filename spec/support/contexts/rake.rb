@@ -13,4 +13,15 @@ shared_context 'with rake' do
     DocumentTransfer.load_rake_tasks
     Rake::Task.define_task(:environment)
   end
+
+  # Invoke the task and return output.
+  #
+  # @return [String] The output of the task.
+  def invoke_task
+    output = StringIO.new
+    $stdout = output
+    task.invoke
+    $stdout = STDOUT
+    output.string
+  end
 end

@@ -16,4 +16,4 @@ RUN bundle binstubs --all
 # Copy the application code.
 COPY . .
 
-CMD ["bundle", "exec", "rackup", "--port", "3000", "--host", "0.0.0.0"]
+CMD ["./script/api"]

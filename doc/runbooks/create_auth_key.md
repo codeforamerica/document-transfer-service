@@ -4,13 +4,13 @@ In order to access the API, a client will need a consumer with a valid
 authentication key. These can be created by using the [console].
 
 1. Open the [console].
-1. If the key is for a new client, create the consumer and note the id: 
-  
+1. If the key is for a new client, create the consumer and note the id:
+
    ```ruby
    consumer = DocumentTransfer::Model::Consumer.create(name: '<consumer name>')
    consumer.id
    ```
-   
+
 1. If the key is for an existing client, retrieve it using the id or name:
 
    ```ruby
@@ -25,8 +25,8 @@ authentication key. These can be created by using the [console].
    ```ruby
    key = DocumentTransfer::Model::AuthKey.create(consumer:)
    key.plain_key
-   ``` 
-   
+   ```
+
 1. Save the consumer id and key in a secure location accessible by the client.
 2. For information on how to use these values, see the [authentication
    documentation][auth].

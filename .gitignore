@@ -3,6 +3,7 @@
 *.env
 !sample.env
 coverage/
+log/
 
 # Ignore Byebug command history file.
 .byebug_history
@@ -17,6 +18,7 @@ coverage/
 
 # Include project IDE settings, but ignore user-specific settings.
 !.idea/
+.idea/dataSources.xml
 *.iml
 *.iws
 out/

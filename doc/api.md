@@ -56,7 +56,24 @@ Additional fields may be included based on the destination type.
 }
 ```
 
+## Instrumentation
+
+The following metrics are reported for each API call using the
+`DocumentTransfer::API::Middleware::Instrument` middleware for rack.
+
+| Metric Name                  | Description                                                |
+|------------------------------|------------------------------------------------------------|
+| `endpoint.requests.count`    | Counter incremented with each request to a valid endpoint. |
+| `endpoint.requests.duration` | Request duration, in milliseconds, for valid endpoints.    |
+
+## Logging
+
+All requests are logged using the `DocumentTransfer::API::Middleware::Logger`
+middleware for rack. The logger utilizes [semantic logging][semantic_logger] in
+JSON format to provide easily parsable log entries.
+
 [authentication]: ./api/authentication.md
 [destination]: ./destinations.md
+[semantic_logger]: https://logger.rocketjob.io/
 [source]: ./sources.md
 [spec]: ../openapi.yaml
