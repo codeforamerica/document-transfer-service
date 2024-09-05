@@ -6,6 +6,9 @@ module DocumentTransfer
   module Bootstrap
     module Stage
       # Base class for bootstrap stages.
+      #
+      # @abstract Subclass and implement {#bootstrap} to define a bootstrap
+      #   stage.
       class Base
         include SemanticLogger::Loggable
 

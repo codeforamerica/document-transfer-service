@@ -78,6 +78,7 @@ nav:
       - Jobs: architecture/jobs.md
       - Sources: architecture/sources.md
       - Destinations: architecture/destinations.md
+    - Bootstrap: bootstrap.md
   - About:
     # Include changelog.
     - License: license.md
