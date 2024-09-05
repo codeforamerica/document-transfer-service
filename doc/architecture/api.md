@@ -180,7 +180,7 @@ to the destination. It handles retries with exponential backoff, logging, and
 error handling. This allows for a more resilient system that can recover from
 temporary failures at either the source or destination.
 
-# TODO: More information about jobs? Cron jobs?
+For more information on jobs, see the [Jobs Architecture][jobs] documentation.
 
 ## Sequel
 
@@ -190,6 +190,7 @@ write raw SQL queries.
 
 [authentication]: ../api/authentication.md
 [grape]: https://github.com/ruby-grape/grape
+[jobs]: jobs.md
 [openapi]: https://www.openapis.org/
 [opentelemetry]: https://opentelemetry.io/
 [rack]: https://github.com/rack/rack
