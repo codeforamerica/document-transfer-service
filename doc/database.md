@@ -67,7 +67,7 @@ Note that both `db:reset` and `db:drop` will refuse to run in production.
 
 The service uses the [sequel] gem to manage the database schema via
 [migrations][sequel-migrations]. These migrations are stored in the
-[`db/migrate`][migrate] directory and are prefixed with a timestamp to ensure
+[`db/migrations`][migrate] directory and are prefixed with a timestamp to ensure
 they run in proper order and avoid collisions.
 
 Migrations can be run using the following command:
@@ -83,7 +83,7 @@ number:
 bundle exec rake db:migrate\[202407082156]
 ```
 
-[migrate]: ./db/migrate
+[migrate]: https://github.com/codeforamerica/document-transfer-service/tree/main/db/migrations
 [migrations]: #schema-and-migrations
 [rake]: https://ruby.github.io/rake/
 [sequel]: https://sequel.jeremyevans.net/

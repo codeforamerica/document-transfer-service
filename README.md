@@ -38,7 +38,7 @@ service.
 Using docker compose, the application code will be mounted from your local
 system to the running container. This will allow you to make changes to the
 code and see them reflected in the running service without having to rebuild the
-image. Using docker compose will launch the api, the worker, and a database. 
+image. Using docker compose will launch the api, the worker, and a database.
 
 To run the service with docker compose, make sure you have [Docker Desktop]
 installed and run the following:
@@ -132,16 +132,16 @@ bundle exec rake db:drop
 See the [API documentation][api] for information on how to interact with the
 service.
 
-[.env]: ./sample.env
-[api]: ./doc/api.md
-[create-key]: ./doc/runbooks/create_auth_key.md
-[database]: ./doc/database.md
-[destination]: ./doc/destinations.md
-[Dockerfile]: ./Dockerfile
-[docker compose]: ./docker-compose.yaml
+[.env]: https://github.com/codeforamerica/document-transfer-service/blob/main/sample.env
+[api]: ./api.md
+[create-key]: ./runbooks/create_auth_key.md
+[database]: ./database.md
+[destination]: ./api/destinations.md
+[Dockerfile]: https://github.com/codeforamerica/document-transfer-service/blob/main/Dockerfile
+[docker compose]: https://github.com/codeforamerica/document-transfer-service/blob/main/docker-compose.yaml
 [Docker Desktop]: https://docs.docker.com/desktop/
 [omz]: https://ohmyz.sh/
-[ruby-version]: ./.ruby-version
+[ruby-version]: https://github.com/codeforamerica/document-transfer-service/blob/main/.ruby-version
 [rvm]: https://rvm.io/
-[source]: ./doc/sources.md
-[worker]: ./doc/worker.md
+[source]: ./api/sources.md
+[worker]: ./worker.md

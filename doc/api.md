@@ -127,4 +127,4 @@ JSON format to provide easily parsable log entries.
 [destination]: ./api/destinations.md
 [semantic_logger]: https://logger.rocketjob.io/
 [source]: ./api/sources.md
-[spec]: ../openapi.yaml
+[spec]: https://github.com/codeforamerica/document-transfer-service/blob/main/openapi.yaml
