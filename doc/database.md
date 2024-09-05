@@ -53,7 +53,7 @@ will drop all existing tables and recreate the schema.
 
 ```bash
 bundle exec rake db:reset
-````
+```
 
 Finally, you can drop the entire database with:
 

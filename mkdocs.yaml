@@ -1,0 +1,85 @@
+site_name: Document Transfer Service
+repo_url: https://github.com/codeforamerica/document-transfer-service
+edit_uri: edit/main/doc/
+docs_dir: doc
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - plantuml_markdown
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+theme:
+  name: material
+  icon:
+    logo: material/puzzle
+  palette:
+      scheme: slate
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.action.edit
+    - navigation.path
+    - navigation.top
+    - toc.follow
+    - toc.integrate
+    - search.highlight
+    - search.suggest
+
+extra:
+  generator: false
+  social:
+    - icon: material/web
+      link: https://codeforamerica.org/
+      name: Code for America website
+    - icon: fontawesome/brands/github
+      link: https://github.com/codeforamerica
+      name: Code for America on GitHub
+    - icon: fontawesome/brands/threads
+      link: https://www.twitter.com/codeforamerica
+      name: Code for America on Threads
+    - icon: fontawesome/brands/x-twitter
+      link: https://www.threads.net/@codeforamerica
+      name: Code for America on X (formerly Twitter)
+
+nav:
+  - Home: index.md
+  - Usage:
+    - API:
+        - API Reference: api.md
+        - Authentication: api/authentication.md
+        - Sources: api/sources.md
+        - Destinations: api/destinations.md
+    - Background Jobs: worker.md
+  - Operation:
+    - Database: database.md
+    - Developer Console: console.md
+    - Create Auth Key: runbooks/create_auth_key.md
+  - Developing:
+    - Architecture:
+      - System: architecture.md
+      - API: architecture/api.md
+      - Worker: architecture/worker.md
+      - Jobs: architecture/jobs.md
+      - Sources: architecture/sources.md
+      - Destinations: architecture/destinations.md
+  - About:
+    # Include changelog.
+    - License: license.md
+
+copyright: Produced by Code for America under the MIT license.

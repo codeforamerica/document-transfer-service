@@ -31,22 +31,6 @@ the following environment variables:
 |------------------------|---------------------------------------------------|---------|
 | `QUEUE_STATS_INTERVAL` | Interval, in seconds, to report queue statistics. | `30`    |
 
-## Implementation
-
-Individual jobs are defined in `lib/job`. To implement a new, non-recurring job,
-create a new class that extends `DocumentTransfer::Job::Base` and implements the
-`#perform` method. The `#perform` method should contain the logic to be executed
-when the job is processed.
-
-To create a new recurring job, create a new class under `lib/job/cron` that
-extends `DocumentTransfer::Job::Cron::Base` and implements the `#perform` as
-described above. Additionally, set `self.cron_expression` at the top of your
-class to a valid [cron expression][cron].
-
-The base classes will handle queuing, initialize a `logger`, and record metrics.
-To add your new job to the system, require the class in
-`DocumentTransfer::Job.load`.
-
 ## Instrumentation
 
 The following metrics are collected and reported by StatsD regularly (default is
@@ -75,6 +59,5 @@ The following [rake] tasks are available to help with managing the queue:
 - `rake jobs:queue` - Print information about the queue in JSON format.
 - `rake jobs:schedule` - Schedule all recurring jobs.
 
-[cron]: https://crontab.guru/
 [delayed_job]: https://github.com/collectiveidea/delayed_job
 [rake]: https://ruby.github.io/rake/
