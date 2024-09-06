@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 7.1.0'
   s.add_dependency 'adal', '~> 1.0'
   s.add_dependency 'bcrypt', '~> 3.1'
+  s.add_dependency 'configsl', '~> 1.0'
   s.add_dependency 'daemons', '~> 1.4'
   s.add_dependency 'delayed_job', '~> 4.1'
   s.add_dependency 'faraday', '~> 2.9'

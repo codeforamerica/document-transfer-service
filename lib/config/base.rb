@@ -1,23 +1,15 @@
 # frozen_string_literal: true
 
-require_relative 'dsl'
-require_relative 'from_environment'
-require_relative 'validation'
+require 'configsl'
 
 module DocumentTransfer
   module Config
-    class InvalidConfigurationError < ArgumentError; end
-
     # Base class for configuration.
-    class Base
-      include DSL
-      include FromEnvironment
-      include Validation
-
+    class Base < ConfigSL::Config
       def initialize(params = {})
-        @params = params
+        super
 
-        validate
+        validate!
       end
     end
   end

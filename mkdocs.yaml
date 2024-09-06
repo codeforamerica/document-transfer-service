@@ -79,6 +79,7 @@ nav:
       - Sources: architecture/sources.md
       - Destinations: architecture/destinations.md
     - Bootstrap: bootstrap.md
+    - Configuration: configuration.md
   - About:
     # Include changelog.
     - License: license.md

@@ -8,7 +8,7 @@ module DocumentTransfer
     class Destination < Base
       option :type, type: Symbol, enum: [:onedrive], required: true
       option :path, type: String, default: ''
-      option :filename, type: String
+      option :filename, type: String, default: ''
     end
   end
 end
