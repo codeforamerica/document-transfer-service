@@ -27,6 +27,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
+      - name: Install plantuml
+        uses: Timmy/plantuml-action@v1
       - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
       - uses: actions/cache@v4
         with:
@@ -34,6 +36,6 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material pymdown-extensions
+      - run: pip install mkdocs-material pymdown-extensions plantuml_markdown
       - run: mkdocs build
       - run: aws s3 sync ./site "s3://${{ env.BUCKET_NAME || 'dev.docs.cfa.codes' }}/${{ env.PREFIX || 'document-transfer-service' }}" --recursive
