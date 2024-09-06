@@ -120,6 +120,57 @@ length of time as jobs are deleted once they have been completed.
 See the [database] documentation for more details on how the database is
 configured.
 
+```mermaid
+sequenceDiagram
+    critical Request a document transfer
+        activate Consumer
+        activate API
+        activate Database
+        Consumer->>API: Request transfer
+        API->>Database: Record transfer
+        API->>Database: Enqueue background job
+        API->>Consumer: Return transfer id
+        deactivate Consumer
+    end
+
+    critical Background job processing
+        activate Worker
+        loop until success or max attempts
+            Worker->>Database: Reserve job
+            activate Source
+            Worker->>Source: Fetch document
+            deactivate Source
+            activate Destination
+            Worker->>Destination: Transfer document
+            deactivate Destination
+            alt Transfer succeeded
+                Worker->>Database: Update request status
+                Worker->>Database: Mark job complete
+            else Transfer failed
+                alt Max attempts reached
+                    rect rgb(191, 223, 255)
+                    Worker->>Database: Update request status
+                    Worker->>Database: Mark job failed
+                    end
+                else Retry transfer
+                    Worker->>Database: Mark job failed
+                end
+            end
+        end
+        deactivate Worker
+    end
+
+    opt Check transfer status
+        activate Consumer
+        Consumer->>API: Check transfer status
+        API->>Database: Retrieve transfer status
+        API->>Consumer: Return transfer status
+        deactivate Database
+        deactivate API
+        deactivate Consumer
+    end
+```
+
 [api]: architecture/api.md
 [c4-containers]: https://c4model.com/#ContainerDiagram
 [database]: database.md
