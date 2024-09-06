@@ -14,10 +14,7 @@ on:
 jobs:
   deploy:
     name: Deploy Documentation
-    environment: ${{ input.environment || 'dev' }}
-    env:
-      BUCKET_NAME: ${{ env.BUCKET_NAME || 'dev.docs.cfa.codes' }}
-      PREFIX: ${{ env.PREFIX || 'document-transfer-service' }}
+    environment: 'dev'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,4 +36,4 @@ jobs:
             mkdocs-material-
       - run: pip install mkdocs-material pymdown-extensions
       - run: mkdocs build
-      - run: aws s3 sync ./site "s3://${BUCKET_NAME}/${PREFIX}" --recursive
+      - run: aws s3 sync ./site "s3://${{ env.BUCKET_NAME || 'dev.docs.cfa.codes' }}/${{ env.PREFIX || 'document-transfer-service' }}" --recursive
