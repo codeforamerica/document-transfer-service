@@ -1,6 +1,4 @@
 on:
-  # TODO: remove pull requests before merging.
-  pull_request:
   push:
     branches:
       - main
