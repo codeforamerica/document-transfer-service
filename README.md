@@ -132,6 +132,23 @@ bundle exec rake db:drop
 See the [API documentation][api] for information on how to interact with the
 service.
 
+## Documentation
+
+Necessary documentation to operate, use, maintain, and contribute to the service
+is included in this repository. The majority of these documents are written in
+Markdown and can be rendered directly in GitHub or you favorite IDE. However,
+the documentation as a whole is meant to be converted to a static site using
+[MkDocs].
+
+In order to view the documentation in its intended form locally, you can use the
+included docker container. Simply run the following:
+
+```bash
+docker compose --profile docs up -d
+```
+
+The documentation should then be available at http://localhost:8000.
+
 [.env]: https://github.com/codeforamerica/document-transfer-service/blob/main/sample.env
 [api]: ./api.md
 [create-key]: ./runbooks/create_auth_key.md
@@ -140,6 +157,7 @@ service.
 [Dockerfile]: https://github.com/codeforamerica/document-transfer-service/blob/main/Dockerfile
 [docker compose]: https://github.com/codeforamerica/document-transfer-service/blob/main/docker-compose.yaml
 [Docker Desktop]: https://docs.docker.com/desktop/
+[mkdocs]: https://www.mkdocs.org/
 [omz]: https://ohmyz.sh/
 [ruby-version]: https://github.com/codeforamerica/document-transfer-service/blob/main/.ruby-version
 [rvm]: https://rvm.io/
