@@ -17,5 +17,6 @@ CCAP-XXX
 
 #### ✅ Completion tasks
 
+- [ ] Updated documentation
 - [ ] Added relevant tests
 - [ ] Meets acceptance criteria

@@ -46,5 +46,15 @@ services:
     <<: *service-defaults
     command: ./script/worker run
 
+  docs:
+    profiles:
+      - docs
+    build:
+      dockerfile: docs.dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/docs
+
 volumes:
   postgres:

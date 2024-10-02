@@ -73,7 +73,7 @@ middleware for rack. The logger utilizes [semantic logging][semantic_logger] in
 JSON format to provide easily parsable log entries.
 
 [authentication]: ./api/authentication.md
-[destination]: ./destinations.md
+[destination]: ./api/destinations.md
 [semantic_logger]: https://logger.rocketjob.io/
-[source]: ./sources.md
-[spec]: ../openapi.yaml
+[source]: ./api/sources.md
+[spec]: https://github.com/codeforamerica/document-transfer-service/blob/main/openapi.yaml
